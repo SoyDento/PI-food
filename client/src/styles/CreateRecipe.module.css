@@ -1,0 +1,57 @@
+.bakg {
+  height: 70vw;
+  background-color: grey;
+  height: 100%;
+  padding: 0 0 0 5rem;
+  margin: 0;
+  font-family: -apple-system, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+}
+.bannerText {
+  font-size: 3rem;
+  margin: 0;
+  padding: 0;
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  opacity: 90%;
+  height: 69vw;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.cont2 {
+  display: flex;
+  margin-left: 10rem;
+  margin-top: 0;
+  padding: 0;
+}
+.titleAdd {
+  font-size: 3rem;
+  color: blue;
+}
+.danger{
+  color: red;
+  font-size: 0.7rem;
+}
+.valid{
+  color: green;
+  font-size: 0.7rem;
+}
+.dangerInp{
+  color: red;
+  font-size: 0.7rem;
+  background-color: #FDEDEC;
+}
+.validInp{
+  color: green;
+  font-size: 0.7rem;
+  background-color: #D5F5E3;
+}
+.inpt{
+  margin: 1.5rem;
+  color: white;
+}

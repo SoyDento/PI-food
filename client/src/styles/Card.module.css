@@ -1,0 +1,23 @@
+img{
+
+  object-fit: cover;
+  width: 250px;
+  height: 320px;
+  border: 70px;
+  border-color: yellow;
+}
+
+.bot {
+  padding-bottom: 30px;
+}
+
+
+
+/* .image {
+  object-fit: contain;
+  width: 180px;
+  height: 230px;
+  border: 70px;
+  border-style: double;
+  border-color: yellow;
+} */

@@ -1,0 +1,52 @@
+.Episodes {
+
+}
+.containnn {
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+.boxFlex {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.title {
+  text-align: center;
+  margin-bottom: -30px;
+}
+.line {
+  background-color: white;
+  height: 7px;
+  width: 200vw;
+  /* margin-bottom: 50px; */
+}
+.but {
+  width: 2rem;
+  height: 2rem;
+  margin: 30px;
+  box-shadow: 1rem 0.5rem 1rem  yellow;
+  cursor: pointer;
+}
+.Episodes__list {
+  border: 2px;
+  border-radius: 5px;
+  background-color: grey;
+  opacity: 90%;
+  width: 40%;
+  height: 100%;
+  margin: 50px;
+  align-content: center;
+  justify-content: center;
+  padding: 20px;
+}
+.items {
+  margin: 15px;
+}
+
+
+
+/* .Episodes__list {
+  list-style: none;
+} */

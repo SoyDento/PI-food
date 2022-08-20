@@ -1,18 +1,55 @@
-const { YOUR_API_KEY, Recipe } = require('../../db.js');
+const { YOUR_API_KEY, Recipe, Diet, Cuisine, DishType } = require('../../db.js');
 const axios = require('axios').default;
 
-function pushDiets () {
+async function pushRecipes () {
+  // axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${YOUR_API_KEY}&number=100&addRecipeInformation=true`)
+  //     .then( (r)=> Recipe.bulkCreate(r.data.results) )
+  //     .catch(e=> console.log('error en function pushRecipes:', e) );
 
-  axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${YOUR_API_KEY}&number=100&addRecipeInformation=true`)
-      .then( r=>{
-        let promRecipes =  Recipe.bulkCreate(r.data.results)
-        // console.log(r);
-        return r;
-      })
-      .then(r=> r.forEach((o) => Occupation.create({name:o}) ) )
-      .then(r=> console.log('ocupaciones creadas en DB') )
-      .catch(e=> console.log(e) )
+  let apiRecipes = await axios(`https://api.spoonacular.com/recipes/random?apiKey=${YOUR_API_KEY}&number=50`)  // 
+      .then( (r)=> r.data.recipes )
+      .catch(e=> console.log('error en apiRecipes:', e) ); // console.log(apiRecipes);
+
+  apiRecipes.forEach((obj) => {
+
+    Recipe.findOrCreate({ where: { id: obj.id, title: obj.title}, })
+    .then(([recipe, created]) => {
+      if (created) {
+        for (let prop in obj) {
+          recipe.update({[prop]: obj[prop]})
+        }
+      };
+      return [recipe, created];
+    })
+    .then(([recipe, created]) => {
+      if (created) {
+        // let dts = obj.diets.map(   (d)=> Diet.findOrCreate({   where: {name: d}   })     );
+        // let types = obj.dishTypes.map(   (t)=> DishType.findOrCreate({   where: {name: t}   })     );
+        let cuis = obj.cuisines.map( async(c)=> await Cuisine.findOrCreate({   where: {name: c}   })     );    
+        // await Promise.all( [...dts, ...types, ...cuis] );
+      };
+      return [recipe, created];
+    })
+    .then(async([recipe, created]) => {
+      if (created) {
+        let allDts = await Diet.findAll(), allTypes = await DishType.findAll(), allCuis = await Cuisine.findAll();
+        // await Promise.all( [allDts, allTypes, allCuis] );
+
+        let newsDts = allDts.filter(o=> obj.diets.includes(o.name));
+        let newsDishTypes = allTypes.filter(o=> obj.dishTypes.includes(o.name));
+        let newsCuis = allCuis.filter(o=> obj.cuisines.includes(o.name));
+
+        let incDiets = newsDts.map( (d)=> recipe.addDiet(d.id) );
+        let incDT = newsDishTypes.map( (dt)=> recipe.addDishType(dt.id) );
+        let incCuis = newsCuis.map( (c)=> recipe.addCuisine(c.id) );
+      };
+    })
+    .catch(e=> console.log(e));
+
+
+  });
+
 
 };
 
-module.exports  = pushDiets;
+module.exports  = pushRecipes;

@@ -1,10 +1,10 @@
 const axios = require('axios').default;
-const { Cussines } = require('../db.js');
+const { Cuisine } = require('../db.js');
 
 
 async function getCussines(){
 
-  let cussines = await Cussines.findAll()
+  let cussines = await Cuisine.findAll()
     .then( async(r) => r )
     .catch( e=> console.log(e) );
   // console.log(Cussines);

@@ -23,7 +23,7 @@ describe('Recipe routes', () => {
       agent.get('/recipes').expect(200)
     );
     it('should get 200', () =>
-      agent.get('/characters')
+      agent.get('/recipes')
         .expect(200)
         .expect('Content-Type', /json/) // podemos testear los headers
         .expect(function (res) {
@@ -31,7 +31,7 @@ describe('Recipe routes', () => {
         })
     );
     it('should get 200', () =>
-      agent.get('/characters/2521a12e-f1c2-4b0d-9697-fca6f89de52a')
+      agent.get('/recipes/2521a12e-f1c2-4b0d-9697-fca6f89de52a')
         .expect(200)
         .expect('Content-Type', /json/) // podemos testear los headers
         .expect(function (res) {
@@ -69,13 +69,13 @@ describe('Recipe routes', () => {
         })
     );
     it('you should get {} when you passed wrong id', () =>
-      agent.get('/characters/6d317822-d457-458f-a553-7db90a7c0fdc')
+      agent.get('/recipes/6d317822-d457-458f-a553-7db90a7c0fdc')
         .expect(function (res) {
           expect(res.body).to.eql({}) // testeamos la respuesta con el body
         })
     );
-    it('should get status 200 and an array of characters that match the dataquery', () =>
-      agent.get('/characters?data=h')
+    it('should get status 200 and an array of recipes that match the dataquery', () =>
+      agent.get('/recipes?data=h')
         .expect(200)
         .expect('Content-Type', /json/) // podemos testear los headers
         .expect(function (res) {
@@ -85,9 +85,9 @@ describe('Recipe routes', () => {
 
   });
 
-  describe('POST /characters', () => {
+  describe('POST /recipes', () => {
     it('should get status 200 and add a character', () =>
-      agent.post('/characters')
+      agent.post('/recipes')
         .send({
                 name: "Panam",
                 nickname: "wooww",

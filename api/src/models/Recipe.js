@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
     },
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     title: {
       type: DataTypes.STRING,
@@ -21,44 +21,37 @@ module.exports = (sequelize) => {
     },
     image: {
       type: DataTypes.TEXT,
-      allowNull: false,
-      defaultValue: 'not img'
+      defaultValue: 'not img',
     },
     veryHealthy: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
     },
     cheap: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
     },
     healthScore: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1
+      defaultValue: 1,
     },
     creditsText: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: 'database'
+      defaultValue: 'null database',
     },
     aggregateLikes: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1
+      defaultValue: 1,
     },
     readyInMinutes: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 9999
+      defaultValue: 9999,
     },
     servings: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0
+      defaultValue: 0,
     },
     sourceUrl: {
       type: DataTypes.TEXT,
-      allowNull: false,
-      defaultValue: 'not url'
+      defaultValue: 'not url',
     },
     analyzedInstructions: {
       // type: DataTypes.ARRAY(DataTypes.STRING)

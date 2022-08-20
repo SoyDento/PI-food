@@ -5,7 +5,7 @@ async function deleteRecipe(id) {
 		let recipeOver = await Recipe.findByPk(id)
 
 		Recipe.destroy({
-      where: { id: id },
+      where: { id_db: id },
       force: true
     })
 		.then( (r)=> console.log(' borro la receta') )

@@ -1,4 +1,4 @@
-const { Cusine } = require('../../db.js');
+const { Cuisine } = require('../../db.js');
 
 let cuisines = [ 'Argentinian', 'Vasque', 'Galician', 'nordic', 'African', 'American', 'British', 'Cajun',
   'Caribbean', 'Chinese', 'Eastern European', 'European', 'French', 'German', 'Greek', 'Indian', 'Irish',
@@ -6,7 +6,7 @@ let cuisines = [ 'Argentinian', 'Vasque', 'Galician', 'nordic', 'African', 'Amer
   'Nordic', 'Southern', 'Arabic', 'Spanish', 'Thai', 'Vietnamese' ];
 
   function pushDiets () {
-    cuisines.forEach((c) =>  Cusine.create( c ) );
+    cuisines.forEach((c) =>  Cuisine.create({ name: c }) );
   };
 
   module.exports  = pushDiets;

@@ -8,7 +8,7 @@ async function getIDrecipe (id) {
   try {
     let recipe = await Recipe.findOne({
         // logging: console.log,
-        where: { id },
+        where: { id_db: id },
         include: [ Diet, DishType, Cuisine ]
       });
     return recipe;

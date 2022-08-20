@@ -1,0 +1,19 @@
+.EpisodeDetail-Container{
+    text-align: center;
+    background-color: grey;
+    opacity: 90%;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 40px;
+    width: 40%;
+}
+
+.EpisodeDetail-Data ul {
+    list-style: none;
+
+}
+
+.EpisodeDetail-Data ul li {
+    margin-left: 18%;
+    width: 60%;
+}
