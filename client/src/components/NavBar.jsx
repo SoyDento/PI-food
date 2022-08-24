@@ -1,15 +1,15 @@
 // import React from "react";
 import React, { Component } from 'react';
-import "../styles/NavBar.css";
+import s from "../styles/NavBar.module.css";
 import { Link } from "react-router-dom";
 
 class NavBar extends Component {
   render(){
     return (
-      <div className="navbar">
-        <div><Link to="/home">Home</Link></div>
-        <div><Link to="/dishTypes">Dish Types</Link></div>
-        <div><Link to="/create">Create New Recipe</Link></div>
+      <div className={s.navbar}>
+        <div><Link to="/home/recipes">Home</Link></div>
+        <div><Link to="/home/cuisines">by region</Link></div>
+        <div><Link to="/home/create">Create New Recipe</Link></div>
       </div>
     );
   }
@@ -17,10 +17,10 @@ class NavBar extends Component {
 //
 // function NavBar() {
 //   return (
-//     <div className="navbar">
-        // <div><Link to="/home">Home</Link></div>
-        // <div><Link to="/dishTypes">Dish Types</Link></div>
-        // <div><Link to="/create">Create New Recipe</Link></div>
+//     <div className={s.navbar}>
+        // <div><Link to="/home/recipes">Home</Link></div>
+        // <div><Link to="/home/cuisines">by region</Link></div>
+        // <div><Link to="/home/create">Create New Recipe</Link></div>
 //     </div>
 //   );
 // }

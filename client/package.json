@@ -7,6 +7,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^13.1.1",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.1",
+    "@types/react-router-dom": "^1.22.11",
     "enzyme": "^3.11.0",
     "is-react": "^1.5.4",
     "react": "^17.0.2",

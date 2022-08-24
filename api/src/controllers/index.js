@@ -18,6 +18,7 @@ const recipesGet = async(req, res, next)=>{
       return res.send(recipesDB)  //    petición probada !!!!!! --
     };
     let chs = await getRecipesQy(data);
+    if (chs.length === 0) chs = [{msg: 'There are no recipes with that word in their title. Try another possible denomination'}];
     res.send(chs)              //    petición probada !!!!!! --
   } catch (e) { next(e) }
 };

@@ -1,125 +1,91 @@
-import {ADD_QUOTE,
-    GET_CHARACTERS,
-    GET_CHARACTER_DETAIL,
-    GET_EPISODES,
-    EMPTY_CHARACTER_DETAIL,
-    GET_EPISODE_DETAIL,
-    EMPTY_EPISODE_DETAIL,
+import {
+    GET_RECIPES,
+    GET_RECIPE_DETAIL,    
+    EMPTY_RECIPE_DETAIL,    
     FILTER_BY_VALUES,
+    FILTER_BY_DIETS,
     FILTER_CREATED,
     ORDER_BY_NAME,
-    GET_NAME_CHAR,
-    POST_CHARACTER,
-    GET_OCCUPATIONS,
-    GET_API_CHARS,
-    GET_DB_CHARS,
-    REMOVE_CHAR,
-    CLOSE_CHAR,
+    GET_NAME_RECIPES,
+    POST_RECIPE,
+    GET_DIETS,
+    GET_CUISINES,
+    GET_DB_RECIPES,
+    REMOVE_RECIPE,
+    CLOSE_RECIPE,
     CHANGE_AT}
      from "../actions";
 
-//==== Setear Estado Global Inicial ======//
+
+//==== Acá Seteo Estado Global Inicial ======//
 
 const initialState = {
-    quote : {},
-    characters: [],
-    allCharacters: [],
-    apiChars: [],
-    dbChars: [],
-    characterDetail: {},
-    outIDcharacter: {},
+    recipes: [],
+    allRecipes: [],
+    recipeDetail: {},
+    outIDrecipe: {},
     episodes: [],
     episodeDetail:{},
-    occupations: []
+    diets: [],
+    dishTypes: [],
+    cuisines: []
 }
 
-//==== Setear Reducers ======//
+
 function rootReducer(state = initialState, action){
-    if(action.type === ADD_QUOTE){
+    
+    if(action.type === GET_RECIPES){
         return {
             ...state,
-            quote: action.payload
+            recipes: action.payload,
+            allRecipes: action.payload            
         }
-    }
-    if(action.type === GET_API_CHARS){
+    }      
+    if(action.type === GET_RECIPE_DETAIL){
         return {
             ...state,
-            characters: action.payload,
-            apiChars: action.payload,
-            allCharacters: [...state.dbChars, ...action.payload]
+            recipeDetail: action.payload
         }
     }
-    if(action.type === GET_DB_CHARS){
+    if(action.type === EMPTY_RECIPE_DETAIL) {
         return {
             ...state,
-            dbChars: action.payload
+            recipeDetail:{}
         }
-    }
-    if(action.type === GET_CHARACTERS){
-        return {
-            ...state,
-            characters: state.allCharacters
-        }
-    }
-    if(action.type === GET_CHARACTER_DETAIL){
-        return {
-            ...state,
-            characterDetail: action.payload
-        }
-    }
-    if(action.type === EMPTY_CHARACTER_DETAIL) {
-        return {
-            ...state,
-            characterDetail:{}
-        }
-    }
-    if(action.type === GET_EPISODES){
-        return {
-            ...state,
-            episodes: action.payload
-        }
-    }
-    if(action.type === GET_EPISODE_DETAIL){
-        return {
-            ...state,
-            episodeDetail:action.payload
-        }
-    }
-    if(action.type === EMPTY_EPISODE_DETAIL){
-        return {
-            ...state,
-            episodeDetail:{}
-        }
-    }
+    }    
     if(action.type === FILTER_BY_VALUES){
-        let allCharacters = state.allCharacters;
-        let statusFilter = action.payload === 'All' ?
-                allCharacters :
-                allCharacters.filter( (el)=> el.status === action.payload )
+        let allRecipes = state.allRecipes;
+        let filter = allRecipes.filter((o)=> o.dishTypes.includes(action.payload) )
         return {
             ...state,
-            characters: statusFilter
+            recipes: filter
+        }
+    }
+    if(action.type === FILTER_BY_DIETS){
+        let allRecipes = state.allRecipes;
+        let filter = allRecipes.filter((o)=> o.diets.includes(action.payload) )
+        return {
+            ...state,
+            recipes: filter
         }
     }
     if(action.type === FILTER_CREATED){
-      let allChs = state.allCharacters;
+      let allRecipes = state.allRecipes;
       let createdFilter = (action.payload === 'created') ?
-        allChs.filter( (el)=> el.status === 'Presumed dead' ) :
-        allChs.filter( (el)=> el.status === 'Alive' )
-
+        allRecipes.filter( (el)=> el.db === 0 ) : allRecipes.filter( (el)=> el.db !== 0 )        
         return {
           ...state,
-          characters: createdFilter
+          recipes: createdFilter
         }
     }
     if(action.type === ORDER_BY_NAME){
-        const sortedArr = action.payload === 'ascending order' ?
-                state.allCharacters.sort( function(x,y) {
+        const sortedArr = action.payload === 'alphabetically ascending' ?
+                state.allRecipes.sort( function(x,y) {
                     if (x.name < y.name) return -1;
                     if (x.name > y.name) return 1;
                     return 0;
                   })  :
-              state.allCharacters.sort( function(x,y) {
+              state.allRecipes.sort( function(x,y) {
                   if (x.name < y.name) return 1;
                   if (x.name > y.name) return -1;
                   return 0;
@@ -127,50 +93,69 @@ function rootReducer(state = initialState, action){
 
         return {
             ...state,
-            characters: sortedArr
+            recipes: sortedArr
         }
     }
-    if(action.type === GET_NAME_CHAR){
+    if(action.type === GET_DB_RECIPES){
         return {
             ...state,
-            characters: action.payload
+            recipes: action.payload,
+            allRecipes: action.payload 
+        }
+    } 
+    if(action.type === GET_NAME_RECIPES){
+        return {
+            ...state,
+            recipes: action.payload
         }
     }
-    if(action.type === POST_CHARACTER){
+    if(action.type === POST_RECIPE){
         return {
             ...state,
             newChar: action.payload
         }
     }
-    if(action.type === GET_OCCUPATIONS){
+    if(action.type === GET_CUISINES){
         return {
             ...state,
-            occupations: action.payload
+            cuisines: action.payload
         }
     }
-    if(action.type === REMOVE_CHAR){
+    if(action.type === GET_DIETS){
         return {
             ...state,
-            characters: state.characters.filter(c=> c.char_id !== action.payload.id),
-            allCharacters: state.allCharacters.filter(c=> c.char_id !== action.payload.id),
-            outIDcharacter: action.payload.id
+            diets: action.payload
         }
     }
-    if(action.type === CLOSE_CHAR){
+    if(action.type === GET_DISH_TYPES){
         return {
             ...state,
-            characters: state.characters.filter(c=> c.char_id !== action.payload.id),
-            allCharacters: state.allCharacters.filter(c=> c.char_id !== action.payload.id),
-            outIDcharacter: action.payload
+            dishTypes: action.payload
+        }
+    }
+    if(action.type === REMOVE_RECIPE){
+        return {
+            ...state,
+            recipes: state.recipes.filter(c=> c.id !== action.payload.id),
+            allRecipes: state.allRecipes.filter(c=> c.id !== action.payload.id),
+            outIDrecipe: action.payload.id
+        }
+    }
+    if(action.type === CLOSE_RECIPE){
+        return {
+            ...state,
+            recipes: state.recipes.filter(c=> c.id !== action.payload.id),
+            allRecipes: state.allRecipes.filter(c=> c.id !== action.payload.id),
+            outIDrecipe: action.payload
         }
     }
     if(action.type === CHANGE_AT){
-      let chars = state.characters.filter(c=> c.char_id !== action.payload.id);
-      let allChars = state.allCharacters.filter(c=> c.char_id !== action.payload.id);
+      let recips = state.recipes.filter(c=> c.id !== action.payload.id);
+      let allRecipes = state.allRecipes.filter(c=> c.id !== action.payload.id);
       return {
         ...state,
-        characters: [...chars, action.payload],
-        allCharacters: [...allChars, action.payload]
+        recipes: [...recips, action.payload],
+        allRecipes: [...allRecipes, action.payload]
       }
     }
 

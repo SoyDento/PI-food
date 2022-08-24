@@ -1,13 +1,13 @@
 import React from "react";
 import logo from "../img/logo.png";
-import s from "../styles/Home.module.css";
+import s from "../styles/Landing.module.css";
 
 
-function Home(props) {
+function Landing(props) {
   
   return (
-    <div className={s.Home}>
-      <img src={logo} alt="" className={s.Home__logo} />
+    <div className={s.Landing}>
+      <img src={logo} alt="" className={s.Landing__logo} />
       <hr/>
       <Link  to="/home/recipes">
                   <div className={`${s.ac}`}>
@@ -23,4 +23,4 @@ function Home(props) {
 }
 
 
-export default Home;
+export default Landing;

@@ -10,16 +10,16 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: ''
+      data: ''
     };
   };
   handleInputChange = (e)=>{
     e.preventDefault();
-    this.setState({name: e.target.value});
+    this.setState({data: e.target.value});
   };
   handleSubmit = (e)=>{
     e.preventDefault();
-    this.props.getNameChar(this.state.name);
+    this.props.getNameRecipe(this.state.data);
   };
 
   render() {
@@ -38,7 +38,7 @@ class SearchBar extends Component {
 
 export const mapDispatchToProps = (dispatch) =>{
     return {
-        getNameChar: (n) => dispatch(getNameRecipe(n))
+        getNameRecipe: (n) => dispatch(getNameRecipe(n))
     }
 };
 
@@ -49,16 +49,16 @@ export default connect(null, mapDispatchToProps)(SearchBar);
 // export default function SearchBar() {
 //
 //   const dispatch = useDispatch();
-//   const [name, setName] = React.useState('');
+//   const [data, setName] = React.useState('');
 //
 //   function handleInputChange(e) {
 //     e.preventDefault();
 //     setName(e.target.value);
-//     console.log(name);
+//     console.log(data);
 //   };
 //   function handleSubmit(e) {
 //     e.preventDefault();
-//     dispatch(getNameChar(name));
+//     dispatch(getNameRecipe(data));
 //   };
 //
 //   return(

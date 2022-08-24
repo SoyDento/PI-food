@@ -1,128 +1,125 @@
-export const ADD_QUOTE = "ADD_QUOTE";
+export const GET_RECIPE_DETAIL = 'GET_RECIPE_DETAIL';
 
-export const GET_CHARACTER_DETAIL = 'GET_CHARACTER_DETAIL';
+export const EMPTY_RECIPE_DETAIL="EMPTY_RECIPE_DETAIL"
 
-export const EMPTY_CHARACTER_DETAIL="EMPTY_CHARACTER_DETAIL"
-
-export const GET_CHARACTERS = 'GET_CHARACTERS';
-
-export const GET_EPISODES = 'GET_EPISODES';
-
-export const EMPTY_EPISODE_DETAIL = 'EMPTY_EPISODE_DETAIL';
-
-export const GET_EPISODE_DETAIL = 'GET_EPISODE_DETAIL';
+export const GET_RECIPES = 'GET_RECIPES';
 
 export const FILTER_BY_VALUES = 'FILTER_BY_VALUES';
 
+export const FILTER_BY_DIETS = 'FILTER_BY_DIETS';
+
 export const FILTER_CREATED = 'FILTER_  CREATED';
 
-export const GET_NAME_RECIP = 'GET_NAME_RECIP';
+export const GET_NAME_RECIPES = 'GET_NAME_RECIPES';
 
-export const GET_OCCUPATIONS = 'GET_OCCUPATIONS';
+export const GET_DIETS = 'GET_DIETS';
 
-export const POST_CHARACTER = 'POST_CHARACTER';
+export const GET_CUISINES = 'GET_CUISINES';
+
+export const GET_DISH_TYPES = 'GET_DISH_TYPES';
+
+export const POST_RECIPE = 'POST_RECIPE';
 
 export const ORDER_BY_NAME = 'ORDER_BY_NAME';
 
-export const GET_API_CHARS = 'GET_API_CHARS';
+export const GET_DB_RECIPES = 'GET_DB_RECIPES';
 
-export const GET_DB_CHARS = 'GET_DB_CHARS';
+export const REMOVE_RECIPE = 'REMOVE_RECIPE';
 
-export const REMOVE_CHAR = 'REMOVE_CHAR';
-
-export const CLOSE_CHAR = 'CLOSE_CHAR';
+export const CLOSE_RECIPE = 'CLOSE_RECIPE';
 
 export const CHANGE_AT = 'CHANGE_AT';
 
 //====================================//
 
-export function addQuote() {
-    return function(dispatch) {
-        //fetchear la Api en la ruta de las quotes random
-        return fetch('https://www.breakingbadapi.com/api/quote/random')
-        .then(res => res.json())
-        //despachar el objeto al reducer
-        .then(json => {  dispatch({type: ADD_QUOTE, payload: json[0]})  })
-    }
+
+export function getRecipes(){
+  return function(dispatch) {        
+    return fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=7bc6e5fb0f4a44fe9baa3e7dce8a6665&number=100&addRecipeInformation=true`)
+    .then(res => res.json())
+    .then(res =>{
+      let arr = []
+      res.forEach( o=>{
+        arr.push({
+            id: o.id_db,
+            db: 1,
+            title: o.title,
+            image: o.image,            
+            cheap: o.cheap,
+            healthScore : o.healthScore,
+            diets : o.diets,
+            dishTypes : o.dishTypes,
+            cuisines : o.cuisines,
+            created_DB: false
+        })
+      })
+      // console.log(arr);
+      return arr;
+    })
+    .then(json => {  dispatch({type: GET_RECIPES, payload: json})  })
 }
-
-//====================================//
-
-export function getCharacters(){
-    return function(dispatch) {
-            dispatch({type: GET_CHARACTERS})
-    }
 }
 
 //===================================//
-export function getCharacterDetail(id){
+export function getRecipeDetail(id, created){
     return function(dispatch) {
-      if (id.toString().includes('-')) {
-        return fetch(`http://localhost:3001/characters/${id}`)
+      if (created) {
+        return fetch(`http://localhost:3001/recipes/${id}`)
         .then(res => res.json())
         .then(res =>{
           let obj = {
-            char_id: res.id,
-            name : res.name,
-            nickname : res.nickname,
-            birthday : res.birthday,
-            img : res.img,
-            status : res.status,
-            occupation : res.occupations.map(e=> e.name),
+            id: res.id_db,
+            db: res.id,
+            title: res.title,
+            image: res.image,
+            veryHealthy : res.veryHealthy,
+            cheap: res.cheap,
+            healthScore : res.healthScore,
+            creditsText : res.creditsText,
+            aggregateLikes: res.aggregateLikes,
+            readyInMinutes : res.readyInMinutes,
+            servings : res.servings,
+            sourceUrl: res.sourceUrl,
+            analyzedInstructions : res.analyzedInstructions,
+            diets : res.diets.map(e=> e.name),
+            dishTypes : res.dishTypes.map(e=> e.name),
+            cuisines : res.cuisines.map(e=> e.name),
             created_DB: res.created_DB
           };
           console.log(obj);
           return obj;
         })
         //despachar el objeto al reducer
-        .then(json => {  dispatch({type: GET_CHARACTER_DETAIL, payload: json})  })
+        .then(json => {  dispatch({type: GET_RECIPE_DETAIL, payload: json})  })
       };
-        return fetch(`https://www.breakingbadapi.com/api/characters/${id}`)
+        return fetch(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=f01dd829cbbd4de49a96e591532f1ca1`) 
         .then(res => res.json())
         //despachar el objeto al reducer
-        .then(json => {  dispatch({type: GET_CHARACTER_DETAIL, payload: json[0]})  })
+        .then(json => {  dispatch({type: GET_RECIPE_DETAIL, payload: json})  }) // o  payload: json[0]
     }
 }
 //====================================//
 
-export function emptyCharacterDetail(){
+export function emptyRecipeDetail(){
     return function(dispatch) {
-            dispatch({type: EMPTY_CHARACTER_DETAIL})
+            dispatch({type: EMPTY_RECIPE_DETAIL})
 
     }
 }
-//====================================//
-export function getEpisodes(){
-    return function(dispatch){
-        return fetch(`https://www.breakingbadapi.com/api/episodes`)
-        .then(res => res.json())
-        //despachar el objeto al reducer
-        .then(json => {  dispatch({type: GET_EPISODES, payload: json})  })
-    }
-}
+
 //====================================//
 
-export function emptyEpisodeDetail(){
-    return function(dispatch) {
-        dispatch({type: EMPTY_EPISODE_DETAIL})
-    }
-}
-//====================================//
-
-export function getEpisodeDetail(id){
-    return function(dispatch){
-        return fetch(`https://www.breakingbadapi.com/api/episodes/${id}`)
-        .then(res => res.json())
-        //despachar el objeto al reducer
-        .then(json => {  dispatch({type: GET_EPISODE_DETAIL, payload: json[0]})  })
-    }
-}
-//====================================//
-
-export function filterCharByStatus (status) {
+export function filterByValues (dishType) {
   return{
     type: 'FILTER_BY_VALUES',
-    payload: status
+    payload: dishType
+  }
+}
+
+export function filterByDiets (diet) {
+  return{
+    type: 'FILTER_BY_DIETS',
+    payload: diet
   }
 }
 
@@ -140,94 +137,102 @@ export function orderByName (payload) {
   }
 }
 
-export function etNameRecipe(name){
+export function getNameRecipe(name){
     return function(dispatch){
         return fetch(`http://localhost:3001/recipes?data=${name}`)
         .then(res => res.json())
         //despachar el objeto al reducer
-        .then(json => {  dispatch({type: GET_NAME_RECIP, payload: json})  })
+        .then(json => {  dispatch({type: GET_NAME_RECIPES, payload: json})  })
     }
 }
 
-export function getOccupations(){
+export function getDiets(){
     return function(dispatch){
-        return fetch(`http://localhost:3001/occupations`)
+        return fetch(`http://localhost:3001/diets`)
         .then(res => res.json())
         //despachar el objeto al reducer
-        .then(json => {  dispatch({type: GET_OCCUPATIONS, payload: json})  })
+        .then(json => {  dispatch({type: GET_DIETS, payload: json})  })
     }
 }
 
-export function postCharacters(body){
+export function getDishTypes(){
+  return function(dispatch){
+      return fetch(`http://localhost:3001/dishTypes`)
+      .then(res => res.json())
+      //despachar el objeto al reducer
+      .then(json => {  dispatch({type: GET_DISH_TYPES, payload: json})  })
+  }
+}
+
+export function getCuisines(){
+  return function(dispatch){
+      return fetch(`http://localhost:3001/cuisines`)
+      .then(res => res.json())
+      //despachar el objeto al reducer
+      .then(json => {  dispatch({type: GET_CUISINES, payload: json})  })
+  }
+}
+
+export function postRecipes(body){
     return function(dispatch){
-        // return axios.post(`https://localhost:3001/postCharacters/`,body)
-        // .then(json => {  dispatch({type: POST_CHARACTER, payload: json})  })
-        return fetch(`http://localhost:3001/characters`, {
+        // return axios.post(`https://localhost:3001/postRecipes/`,body)
+        // .then(json => {  dispatch({type: POST_RECIPE, payload: json})  })
+        return fetch(`http://localhost:3001/recipes`, {
             method: 'POST', // or 'PUT'
             body: JSON.stringify(body), // data can be `string` or {object}!
             headers:{
               'Content-Type': 'application/json'
             }
-          }).then(res => dispatch({type: POST_CHARACTER, payload: res.json()}) )
+          }).then(res => dispatch({type: POST_RECIPE, payload: res.json()}) )
           .catch(error => console.error('Error:', error))
           .then(response => console.log('Success:', response));
     }
 }
 
-export function getApiChars(){
+export function getDbRecipes(){
     return function(dispatch) {
-        //fetchear la Api en la ruta de las quotes random
-        return fetch(`https://www.breakingbadapi.com/api/characters`)
-        .then(res => res.json())
-        //despachar el objeto al reducer
-        .then(json => {  dispatch({type: GET_API_CHARS, payload: json})  })
-    }
-}
-
-export function getDbChars(){
-    return function(dispatch) {
-        //fetchear la Api en la ruta de las quotes random
-        return fetch(`http://localhost:3001/characters`)
+        return fetch(`http://localhost:3001/recipes`)
         .then(res => res.json())
         .then(res =>{
           let arr = []
           res.forEach( o=>{
             arr.push({
-              char_id: o.id,
-              name : o.name,
-              nickname : o.nickname,
-              birthday : o.birthday,
-              img : o.img,
-              status : o.status,
-              occupation : o.occupations.map(e=> e.name),
-              created_DB: o.created_DB
+                id: o.id_db,
+                db: o.id,
+                title: o.title,
+                image: o.image,            
+                cheap: o.cheap,
+                healthScore : o.healthScore,
+                diets : o.diets,
+                dishTypes : o.dishTypes,
+                cuisines : o.cuisines,
+                created_DB: false
             })
           })
           // console.log(arr);
           return arr;
         })
-        .then(json => {  dispatch({type: GET_DB_CHARS, payload: json})  })
+        .then(json => {  dispatch({type: GET_DB_RECIPES, payload: json})  })
     }
 }
 
 export function removeChar (idChar) {
   console.log(idChar);
   return function(dispatch) {
-      return fetch(`http://localhost:3001/removeChar?id=${idChar}`, {
-            method: 'DELETE', // or 'PUT'
-            // body: JSON.stringify(idChar), // data can be `string` or {object}!
+      return fetch(`http://localhost:3001/recipe/remove?id=${idChar}`, {
+            method: 'DELETE', 
             headers:{
               'Content-Type': 'application/json'
             }
           })
       .then(res => res.json())
-      .then(json => {  dispatch({type: REMOVE_CHAR, payload: json})  })
+      .then(json => {  dispatch({type: REMOVE_RECIPE, payload: json})  })
   }
 }
 
-export function closeCharacter (idChar) {
+export function closeRecipe (idChar) {
   return{
-    type: CLOSE_CHAR,
+    type: CLOSE_RECIPE,
     payload: idChar
   }
 }
@@ -235,7 +240,7 @@ export function closeCharacter (idChar) {
 export function changeAtrib (attribute, id, valor) {
   console.log(id); console.log(attribute); console.log(valor);
   return function(dispatch) {
-      return fetch(`http://localhost:3001/${attribute}?idChar=${id}&value=${valor}`, {
+      return fetch(`http://localhost:3001/recipe/${attribute}?id=${id}&value=${valor}`, {
             method: 'PUT',
             headers:{ 'Content-Type': 'application/json' }
           })
