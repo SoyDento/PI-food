@@ -1,23 +1,50 @@
-img{
-
-  object-fit: cover;
-  width: 250px;
-  height: 320px;
-  border: 70px;
-  border-color: yellow;
+.card {  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  border-radius: 20px;
+  margin: 3rem;
+  padding: 0.6rem 0.6rem 0.2rem 0.6rem;
+  opacity: 95%;
+  width: 17rem;
+  height: 36rem;  
+  text-decoration: none;
+}
+.title {
+  font-size: 1.3rem;
+  color: white;
+  margin-left: 3px;
+  margin-bottom: 3px;
+  height: 50px;
 }
 
-.bot {
-  padding-bottom: 30px;
-}
-
-
-
-/* .image {
-  object-fit: contain;
-  width: 180px;
-  height: 230px;
-  border: 70px;
-  border-style: double;
-  border-color: yellow;
+/* .rtg {
+  color: blue;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 8px;
+  margin-top: 6px;
 } */
+
+.box {
+  display: block;
+  background-color: grey;
+  padding-left: 2rem;
+  padding-top: 1rem;
+  width: 240px;
+  height: 230px;
+}
+.img {
+  margin-top: 25px;
+  border-color: yellow 2px;
+}
+.list {  
+  margin-top: 3px;
+  font-size:1rem;
+  color: rgb(9, 8, 8);
+}
+.button {
+  
+}
+

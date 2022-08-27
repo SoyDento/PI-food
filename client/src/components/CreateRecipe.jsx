@@ -6,8 +6,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import validate from '../Utils/validate.js';
 import { useHistory } from 'react-router-dom';
-import { postRecipe, getDiets, getCuisines, getDishTypes } from '../actions';
-import s from '../styles/CreateChar.module.css';
+import { postRecipe, getDiets, getCuisines, getDishTypes } from '../redux/actions';
+import s from '../styles/CreateRecipe.module.css';
 
 
 export default function CreateChar () {
@@ -47,6 +47,13 @@ export default function CreateChar () {
   },[dispatch]);
 
   function handleChange(e) {
+    if (e.target.name === 'cuisines') {
+      let myValue = e.target.value.split(' ');
+      setInput({
+        ...input,
+        cuisines: myValue,
+      });
+    }    
     setInput({
         ...input,
         [e.target.name]: e.target.value,
@@ -69,27 +76,50 @@ export default function CreateChar () {
     setError(validate(input));
   };
   function handleSelect (e) {
-    e.preventDefault();
-    if (!input.diets.includes(e.target.value)) {
-      setInput({
-        ...input,
-        diets: [...input.diets, e.target.value]
-      });
+    e.preventDefault();    
+    // ==== no entiendo porque no me funcionó esta sistematización para más de un input ====
+    // if (!input.[e.target.name].includes(e.target.value)) {
+    //   setInput({
+    //     ...input,
+    //     [e.target.name]: [...input.[e.target.name], e.target.value]
+    //   });      
+    // };
+    if(e.target.name === 'diets') {
+      if (!input.diets.includes(e.target.value)) {
+        setInput({
+          ...input,
+          diets: [...input.diets, e.target.value]
+        }); 
+      }
     };
+    if(e.target.name === 'dishTypes') {
+      if (!input.dishTypes.includes(e.target.value)) {
+        setInput({
+          ...input,
+          dishTypes: [...input.dishTypes, e.target.value]
+        }); 
+      }
+    }
     setError(validate(input));
   };
   function handleDelete(e) {
-    setInput({
-      ...input,
-      diets: input.diets.filter( (o)=> o !== e.target.value)
-    });
-    setError(validate(input));
-  };
-  function resetStatus() {
-    setInput({
-      ...input,
-      status: ''
-    });
+    // ==== no entiendo porque no me funcionó ====
+    // setInput({
+    //   ...input,
+    //   [e.target.name]: input.[e.target.name].filter( (o)=> o !== e.target.value)
+    // });
+    if(e.target.name === 'diets') {
+      setInput({
+        ...input,
+        diets: input.diets.filter( (o)=> o !== e.target.value)
+      });
+    };
+    if(e.target.name === 'dishTypes') {
+      setInput({
+        ...input,
+        dishTypes: input.dishTypes.filter( (o)=> o !== e.target.value)
+      });
+    };
     setError(validate(input));
   };
   function handleSubmit (e) {
@@ -204,7 +234,7 @@ export default function CreateChar () {
 
       <select onChange={(e)=> handleSelect(e)}>
         {
-          dishTypesStore.map(o=> <option key={`s${o.id}`} value={o.name}> {o.name} </option>)
+          dishTypesStore.map(o=> <option nane='dishTypes' key={`s${o.id}`} value={o.name}> {o.name} </option>)
         }
       </select >
       { input.dishTypes?.map( (el, index) =>
@@ -219,79 +249,49 @@ export default function CreateChar () {
 
       <select onChange={(e)=> handleSelect(e)}>
         {
-          dishTypesStore.map(o=> <option key={`s${o.id}`} value={o.name}> {o.name} </option>)
-
-          dishTypesStore.map(o=> 
+          dietsStore.map(o=>{ 
+            return(
               <div>                  
                   <label key={o.id}><input
-                      name={o.name} value={o.name}
+                      name='diets' value={o.name}
                       onChange={(e)=>handleCheck(e)}
-                      type="checkbox"/>Presumed dead</label>
+                      type="checkbox"/> {o.name} </label>
               </div>          
-          )
+          )})
         }
       </select >
-      { input.dishTypes?.map( (el, index) =>
+      { input.diets?.map( (el, index) =>
         <div className={s.dsdfd} key={`o${index}`}>
           <p>{el}</p>
           <button  value={el} onClick={(e)=>handleDelete(e)}>X</button>
         </div>)
       }
-      <div className={error.dishTypes?`${s.danger}`:`${s.valid}`}>
-        {error.dishTypes || 'valid data'}
+      <div className={error.diets?`${s.danger}`:`${s.valid}`}>
+        {error.diets || 'valid data'}
+      </div>     
+      
+      <div className={`${s.inpt}`} key='c'> Put if it is typical of a particular cuisine or belongs to the cuisine of a particular region or regions. In the case of belonging to more than one kitchen, complete the input separating the words with a hyphen. Do not use a space, except in the case of compound names: |
+                        <input
+                              name="cuisines" value={input.cuisines}
+                              onChange={(e)=>handleChange(e)}
+                              className={error.cuisines?`${s.dangerInp}`:`${s.validInp}`}
+                              autoComplete="off"
+                              type="text"  />
+              <div className={error.cuisines?`${s.danger}`:`${s.valid}`}>
+                {error.cuisines || 'valid data'}
+              </div>
       </div>
-
-      <div className={`${s.inpt}`} key='s'> Status: 
-          { (input.status !== '') ?
-              <button  onClick={()=>resetStatus()}>Restart Options</button>
-
-              :
-
-              <div>                  
-                  <label key="Pres"><input
-                      name='Presumed dead' value='Presumed dead'
-                      onChange={(e)=>handleCheck(e)}
-                      type="checkbox"/>Presumed dead</label>
-              </div>
+      <div className={`${s.box}`} key='c'> : List of existing cuisines from the database:
+        <h4>
+          {
+            cuisinesStore.map(c=> ' - ' + c + ' - ')
           }
-
-        <div className={error.status?`${s.danger}`:`${s.valid}`}>
-          {error.status || 'valid data'}
-        </div>
-    </div>
-
-      <div className={`${s.inpt}`} key='s'> Status: 
-          { (input.status !== '') ?
-              <button  onClick={()=>resetStatus()}>Restart Options</button>
-
-              :
-
-              <div>
-                  <label key="Ali"><input
-                      name="Alive"  value="Alive"
-                      onChange={(e)=>handleCheck(e)}
-                      type="checkbox"/>Alive</label>
-                  <label key="Des"><input
-                      name="Deseased"  value="Deseased"
-                      onChange={(e)=>handleCheck(e)}
-                      type="checkbox"/>Deseased</label>
-                  <label key='Unk'><input
-                      name='Unknown'  value='Unknown'
-                      onChange={(e)=>handleCheck(e)}
-                      type="checkbox"/>Unknown</label>
-                  <label key="Pres"><input
-                      name='Presumed dead' value='Presumed dead'
-                      onChange={(e)=>handleCheck(e)}
-                      type="checkbox"/>Presumed dead</label>
-              </div>
-          }
-
-        <div className={error.status?`${s.danger}`:`${s.valid}`}>
-          {error.status || 'valid data'}
-        </div>
-    </div>
+        </h4>
+      </div>
+      <h3>* If the region or cuisine is in the list, please copy it as it appears there.</h3>
 
   </div>
   )
-}
+};
+  
 

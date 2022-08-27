@@ -9,12 +9,13 @@ import {
     GET_NAME_RECIPES,
     POST_RECIPE,
     GET_DIETS,
+    GET_DISH_TYPES,
     GET_CUISINES,
     GET_DB_RECIPES,
     REMOVE_RECIPE,
     CLOSE_RECIPE,
     CHANGE_AT}
-     from "../actions";
+     from "./actions";
 
 
 //==== Acá Seteo Estado Global Inicial ======//
@@ -23,9 +24,8 @@ const initialState = {
     recipes: [],
     allRecipes: [],
     recipeDetail: {},
-    outIDrecipe: {},
-    episodes: [],
-    episodeDetail:{},
+    outRecipe: {},
+    queryRecipes: [],
     diets: [],
     dishTypes: [],
     cuisines: []
@@ -54,19 +54,19 @@ function rootReducer(state = initialState, action){
         }
     }    
     if(action.type === FILTER_BY_VALUES){
-        let allRecipes = state.allRecipes;
-        let filter = allRecipes.filter((o)=> o.dishTypes.includes(action.payload) )
+        let allRecipes = state.queryRecipes;
+        let filterValue = allRecipes.filter((o)=> o.dishTypes.includes(action.payload) )
         return {
             ...state,
-            recipes: filter
+            queryRecipes: filterValue
         }
     }
     if(action.type === FILTER_BY_DIETS){
-        let allRecipes = state.allRecipes;
-        let filter = allRecipes.filter((o)=> o.diets.includes(action.payload) )
+        let allRecipes = state.queryRecipes;
+        let filterDiet = allRecipes.filter((o)=> o.diets.includes(action.payload) )
         return {
             ...state,
-            recipes: filter
+            queryRecipes: filterDiet
         }
     }
     if(action.type === FILTER_CREATED){
@@ -106,7 +106,7 @@ function rootReducer(state = initialState, action){
     if(action.type === GET_NAME_RECIPES){
         return {
             ...state,
-            recipes: action.payload
+            queryRecipes: action.payload
         }
     }
     if(action.type === POST_RECIPE){
@@ -134,19 +134,21 @@ function rootReducer(state = initialState, action){
         }
     }
     if(action.type === REMOVE_RECIPE){
+        let filterRemuve = state.recipes.filter(c=> c.id !== action.payload);
+        console.log(filterRemuve);
         return {
             ...state,
-            recipes: state.recipes.filter(c=> c.id !== action.payload.id),
-            allRecipes: state.allRecipes.filter(c=> c.id !== action.payload.id),
-            outIDrecipe: action.payload.id
+            recipes: filterRemuve,
+            outRecipe: action.payload,
         }
     }
     if(action.type === CLOSE_RECIPE){
+        let filterClose = state.queryRecipes.filter(c=> c.id !== action.payload);
+        console.log(filterClose);
         return {
             ...state,
-            recipes: state.recipes.filter(c=> c.id !== action.payload.id),
-            allRecipes: state.allRecipes.filter(c=> c.id !== action.payload.id),
-            outIDrecipe: action.payload
+            queryRecipes: filterClose,
+            outRecipe: action.payload,
         }
     }
     if(action.type === CHANGE_AT){

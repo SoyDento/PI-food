@@ -14,6 +14,8 @@ let postRecipe = async(obj)=>{
       if (cuis.includes(' ')) {
         cuis = cuis.split(' ').map(p=> p.slice(0,1).toUpperCase().concat(p.slice(1).toLowerCase())).join(' ')
       } else { cuis = cuis[0].toUpperCase().concat(cuis.slice(1).toLowerCase()) };
+      if (cuis[0].includes(' ')) cuis.slice(1);
+      if (cuis[cuis.length-1].includes(' ')) cuis.substring(0, cuis.length - 1);
       return cuis;
     })
     cuisines.forEach( async(c)=> await Cuisine.findOrCreate({   where: {name: c}   })     );

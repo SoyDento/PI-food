@@ -1,16 +1,22 @@
-.App {
+/* .App {
   text-align: center;
-}
+} */
 
 html,
 body {
-  background:#000 url('img/bg.jpg') no-repeat center center/cover;
+  background:#000 url('img/bg2.jpg')  center center/cover;
   height: 100vh;
   color:#fff;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Cambria', 'Garamond', 'Goudy Old Style', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+    'Ubuntu', 'Fira Sans', 'Droid Sans',
+    sans-serif;
 }
 
 a{
   color:white;
   text-decoration: none;
+}
+
+img{
+  object-fit: contain;
 }

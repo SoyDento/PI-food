@@ -61,10 +61,13 @@ export function getRecipes(){
 }
 
 //===================================//
-export function getRecipeDetail(id, created){
+
+
+export function getRecipeDetail(id, creat){
+  console.log(id);
     return function(dispatch) {
-      if (created) {
-        return fetch(`http://localhost:3001/recipes/${id}`)
+      if (creat) {
+        return fetch(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=f01dd829cbbd4de49a96e591532f1ca1`) 
         .then(res => res.json())
         .then(res =>{
           let obj = {
@@ -81,23 +84,45 @@ export function getRecipeDetail(id, created){
             servings : res.servings,
             sourceUrl: res.sourceUrl,
             analyzedInstructions : res.analyzedInstructions,
-            diets : res.diets.map(e=> e.name),
-            dishTypes : res.dishTypes.map(e=> e.name),
-            cuisines : res.cuisines.map(e=> e.name),
-            created_DB: res.created_DB
+            diets : res.diets,
+            dishTypes : res.dishTypes,
+            cuisines : res.cuisines,
+            created_DB: false,
           };
           console.log(obj);
           return obj;
         })
-        //despachar el objeto al reducer
-        .then(json => {  dispatch({type: GET_RECIPE_DETAIL, payload: json})  })
-      };
-        return fetch(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=f01dd829cbbd4de49a96e591532f1ca1`) 
-        .then(res => res.json())
-        //despachar el objeto al reducer
         .then(json => {  dispatch({type: GET_RECIPE_DETAIL, payload: json})  }) // o  payload: json[0]
+      };      
+      return fetch(`http://localhost:3001/recipe/${id}`)
+      .then(res => res.json())
+      .then(res =>{
+        let obj = {
+          id: res.id_db,
+          db: res.id,
+          title: res.title,
+          image: res.image,
+          veryHealthy : res.veryHealthy,
+          cheap: res.cheap,
+          healthScore : res.healthScore,
+          creditsText : res.creditsText,
+          aggregateLikes: res.aggregateLikes,
+          readyInMinutes : res.readyInMinutes,
+          servings : res.servings,
+          sourceUrl: res.sourceUrl,
+          analyzedInstructions : res.analyzedInstructions,
+          diets : res.diets.map(e=> e.name),
+          dishTypes : res.dishTypes.map(e=> e.name),
+          cuisines : res.cuisines.map(e=> e.name),
+          created_DB: res.created_DB
+        };
+        console.log(obj);
+        return obj;
+      })
+      .then(json => {  dispatch({type: GET_RECIPE_DETAIL, payload: json})  })
     }
 }
+
 //====================================//
 
 export function emptyRecipeDetail(){
@@ -137,14 +162,38 @@ export function orderByName (payload) {
   }
 }
 
+//====================================//
+
 export function getNameRecipe(name){
     return function(dispatch){
         return fetch(`http://localhost:3001/recipes?data=${name}`)
         .then(res => res.json())
-        //despachar el objeto al reducer
+        .then(res =>{
+          console.log(res);
+          if (res[0].hasOwnProperty('msg')) return res;
+          let arr = []
+          res.forEach( o=>{
+            arr.push({
+                id: o.id_db,
+                db: o.id,
+                title: o.title,
+                image: o.image,            
+                cheap: o.cheap,
+                healthScore : o.healthScore,                
+                diets : o.diets.map(e=> e.name),
+                dishTypes : o.dishTypes.map(e=> e.name),
+                cuisines : o.cuisines.map(e=> e.name),
+                created_DB: false
+            })
+          })
+          // console.log(arr);
+          return arr;
+        })
         .then(json => {  dispatch({type: GET_NAME_RECIPES, payload: json})  })
     }
 }
+
+//====================================//
 
 export function getDiets(){
     return function(dispatch){
@@ -173,7 +222,9 @@ export function getCuisines(){
   }
 }
 
-export function postRecipes(body){
+//====================================//
+
+export function postRecipe(body){
     return function(dispatch){
         // return axios.post(`https://localhost:3001/postRecipes/`,body)
         // .then(json => {  dispatch({type: POST_RECIPE, payload: json})  })
@@ -189,6 +240,8 @@ export function postRecipes(body){
     }
 }
 
+//====================================//
+
 export function getDbRecipes(){
     return function(dispatch) {
         return fetch(`http://localhost:3001/recipes`)
@@ -202,10 +255,10 @@ export function getDbRecipes(){
                 title: o.title,
                 image: o.image,            
                 cheap: o.cheap,
-                healthScore : o.healthScore,
-                diets : o.diets,
-                dishTypes : o.dishTypes,
-                cuisines : o.cuisines,
+                healthScore : o.healthScore,                
+                diets : o.diets.map(e=> e.name),
+                dishTypes : o.dishTypes.map(e=> e.name),
+                cuisines : o.cuisines.map(e=> e.name),
                 created_DB: false
             })
           })
@@ -216,10 +269,12 @@ export function getDbRecipes(){
     }
 }
 
-export function removeChar (idChar) {
-  console.log(idChar);
+//====================================//
+
+export function removeRecipe (id) {
+  console.log(id);
   return function(dispatch) {
-      return fetch(`http://localhost:3001/recipe/remove?id=${idChar}`, {
+      return fetch(`http://localhost:3001/recipe/remove?id=${id}`, {
             method: 'DELETE', 
             headers:{
               'Content-Type': 'application/json'
@@ -230,10 +285,10 @@ export function removeChar (idChar) {
   }
 }
 
-export function closeRecipe (idChar) {
+export function closeRecipe (id) {
   return{
     type: CLOSE_RECIPE,
-    payload: idChar
+    payload: id
   }
 }
 

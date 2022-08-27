@@ -4,7 +4,7 @@ export default function instructions (obj) {
 
     let steps = [], ingredients = [], equipam = [];
     
-    obj.stepseps?.map((s)=>{
+    obj.stepseps?.forEach((s)=>{
         steps.push(s.stepsep);
         s.ingredients?.forEach(element => {
             ingredients.push(element.name)

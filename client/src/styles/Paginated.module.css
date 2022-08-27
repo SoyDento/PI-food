@@ -1,0 +1,35 @@
+.cont {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+    opacity: 85%;
+    border-radius: 10px;
+    padding: 1.5rem;
+    width: 11.5rem;
+    color: white;
+    font-family: fantasy;
+  }
+  .cont1 {
+    display: flex;
+    background-color: grey;
+    border-radius: 4px;
+    padding: 0.3rem;
+    width: 2.3rem;
+    color: black;
+    align-content: center;
+    justify-content: center;
+    font-family: fantasy;
+    font-size: 1.3rem;
+  }
+  .cont2 {
+    background-color: #A7B49B;
+    border-radius: 5px;
+    padding: 0.3rem;
+    margin: 0.4rem;
+    color: black;
+    font-family: fantasy;
+    cursor: pointer;
+  }
+  .cont2:hover {
+    color: #009900;
+  }

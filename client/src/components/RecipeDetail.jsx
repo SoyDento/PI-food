@@ -1,10 +1,13 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-// import React, { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { Link, useParams, useLocation } from "react-router-dom";
-import { emptyRecipeDetail, getRecipeDetail, changeAtrib } from "../actions";
+// import React, { useEffect } from "react";  // para funcional components
+// import { useDispatch, useSelector } from "react-redux";  // para funcional components
+// import { Link, useParams, useLocation } from "react-router-dom";  // para funcional components
+import { emptyRecipeDetail, 
+         getRecipeDetail, 
+         changeAtrib, 
+         removeRecipe } from "../redux/actions";
 import Spinner from './Spinner'
 import s from "../styles/RecipeDetail.module.css";
 import validateChg from '../Utils/validateChg.js';
@@ -22,43 +25,45 @@ export class RecipeDetail extends Component {
         attribute: '',
         data: '',
         params: this.props.match.params.id,
-        query: ()=>{
-          let queryString = window.location.search;
-          let urlParams = new URLSearchParams(queryString);
-          let q = urlParams.get('creat');
-          return q;
-        },
+        // query: ()=>{
+        //   let queryString = window.location.search;
+        //   let urlParams = new URLSearchParams(queryString);
+        //   let q = urlParams.get('creat');
+        //   console.log(q);
+        //   return q;
+        // },
       };      
       // this.ejectClose = this.ejectClose.bind(this);
     };
     
-    
-
     componentDidMount(){
         this.props.emptyRecipeDetail();  // o poner esto en un desmonte de componente
-        this.props.getRecipeDetail(this.state.params, this.state.query()); // o this.props.match.params.id  como argumento
+        this.props.getRecipeDetail(this.state.params); // o this.props.match.params.id  como argumento
         
-        setTimeout(function(){
-                   
-          let { st, ing, equip } = instructions(this.props.recipeDetail.analyzedInstructions);
-          this.setState({
-            ...this.state,
-            steps: st
-          });  
-          this.setState({
-            ...this.state,
-            ingredients: ing
-          });  
-          this.setState({
-            ...this.state,
-            equipment: equip
-          });  
+        setTimeout(function(){   
+          // console.log(this.props.recipeDetail.title);
+          // if (this.props.recipeDetail.analyzedInstructions) {
+          //   let { st, ing, equip } = instructions(this.props.recipeDetail.analyzedInstructions);
+          //   this.setState({
+          //     ...this.state,
+          //     steps: st
+          //   });  
+          //   this.setState({
+          //     ...this.state,
+          //     ingredients: ing
+          //   });  
+          //   this.setState({
+          //     ...this.state,
+          //     equipment: equip
+          //   });
+          // };           
 
-
-        }, 3500);
-        
+        }, 15500);        
         
     };
+    // componentDidUpdate(){
+    //   this.props.getRecipeDetail(this.state.params);
+    // }
     // componentWillUnmount(){
     //   this.props.emptyRecipeDetail();
     // }
@@ -89,11 +94,38 @@ export class RecipeDetail extends Component {
       this.props.changeAtrib('aggregateLikes', this.props.recipeDetail.id, 1);
         console.log("se agrego un like a la receta");
     };
+    handleRemove = (e)=> {
+      e.preventDefault();
+      this.props.removeRecipe(e.target.value);
+    };
+    // handleReturn = () => {
+    //   history.push(`/home/recipes?data=${this.state.query()}`); // se usa para rederigir desde el código
+    // };
+    handleClick = () => {
+      console.log(this.props.recipeDetail.analyzedInstructions);
+      let { st, ing, equip } = instructions(this.props.recipeDetail.analyzedInstructions);
+            this.setState({
+              ...this.state,
+              steps: st
+            });  
+            this.setState({
+              ...this.state,
+              ingredients: ing
+            });  
+            this.setState({
+              ...this.state,
+              equipment: equip
+            });
+      console.log(st); console.log(ing); console.log(equip);
+      console.log(this.state);
+    };
+
+
 
     render() {
       return (
         <div className={s.RecipeDetail} key="recipe">
-          <h1>Character Details</h1>
+          <h1>Recipe Details</h1>
           <div key='detail'>
           {!this.props.recipeDetail ?  <Spinner/> :          
           <>
@@ -102,18 +134,18 @@ export class RecipeDetail extends Component {
             <img className={s.RecipeDetailPhoto} src={this.props.recipeDetail.image} alt="" />
 
             <p>
-              ► Very Healthy: {this.props.recipeDetail.veryHealthy}
-              ► Cheap: {this.props.recipeDetail.cheap}
-              ► Health Score: {this.props.recipeDetail.healthScore}
+              ► Very Healthy: &nbsp;{this.props.recipeDetail.veryHealthy? 'yes':'no'} &nbsp;&nbsp;&nbsp;
+              ► Cheap: &nbsp;{this.props.recipeDetail.cheap? 'yes':'no'} &nbsp;&nbsp;&nbsp;
+              ► Health Score: &nbsp;{this.props.recipeDetail.healthScore}
             </p>
             <p>
-              ► Ready In Minutes: {this.props.recipeDetail.readyInMinutes}
-              ► Servings: {this.props.recipeDetail.servings}
-              ► Likes: {this.props.recipeDetail.aggregateLikes}              
+              ► Ready In Minutes: &nbsp;{this.props.recipeDetail.readyInMinutes} &nbsp;&nbsp;&nbsp;
+              ► Servings: &nbsp;{this.props.recipeDetail.servings} &nbsp;people&nbsp;&nbsp;
+              ► Likes: &nbsp;{this.props.recipeDetail.aggregateLikes}              
             </p>
-            <div class={s.likeContainer}>
-                <div class={`${s.likeCnt} ${s.unchecked} ${s.button}`} id={s.likeCnt}>
-                  <i class={`${s.likeBtn} ${s.materialIcons}`}>Likes
+            <div className={s.likeContainer}>
+                <div className={`${s.likeCnt} ${s.unchecked} ${s.button}`} id={s.likeCnt}>
+                  <i className={`${s.likeBtn} ${s.materialIcons}`}>Likes
                     <input
                                     value="LIKE"
                                     onClick={()=> this.handleLike()}
@@ -174,43 +206,70 @@ export class RecipeDetail extends Component {
                       </div>
                     }                    
             </div>
-            <div className='instructions'>
-              <h5>INSTRUCTIONS</h5>
-              <ul>
-              {
-                (!this.state.steps) ? <Spinner/> :
-                this.state.steps.map((e, index)=> <li>Step {index}: {e} </li> )
-              }
-              </ul>
-            </div>
-            <div className='ingredients'>
-              <h5>Ingredients:</h5>
-              <ul>
-              {
-                (!this.state.ingredients) ? <Spinner/> :
-                this.state.ingredients.map((e, index)=> <li> {index}: {e} </li> )
-              }
-              </ul>
-            </div>
-            <div className='equipment'>
-              <h5>Equipment:</h5>
-              <ul>
-              {
-                (!this.state.equipment) ? <Spinner/> :
-                this.state.equipment.map((e, index)=> <li> {index}: {e} </li> )
-              }
-              </ul>
-            </div>
+            {
+              (!this.props.recipeDetail.analyzedInstructions) ? null  :
+              <button className={s.button} onClick={()=> this.handleClick()}>expand your recipe ???</button>
+            }
+            
+            {
+              (!this.state.steps) ? null               
+              :
+              <div className={s.abstract}>
+                <div className='instructions'>
+                  <h5>INSTRUCTIONS</h5>
+                  <ul>
+                  {
+                    (!this.state.steps) ? null :
+                    this.state.steps.map((e, index)=> <li>Step {index}: {e} </li> )
+                  }
+                  </ul>
+                </div>
+                <div className='ingredients'>
+                  <h5>Ingredients:</h5>
+                  <ul>
+                  {
+                    (!this.state.ingredients) ? null :
+                    this.state.ingredients.map((e, index)=> <li> {index}: {e} </li> )
+                  }
+                  </ul>
+                </div>
+                <div className='equipment'>
+                  <h5>Equipment:</h5>
+                  <ul>
+                  {
+                    (!this.state.equipment) ? null :
+                    this.state.equipment.map((e, index)=> <li> {index}: {e} </li> )
+                  }
+                  </ul>
+                </div>
+              </div>
+            }
             <div>
               <p>
-                ► credits: {this.props.recipeDetail.creditsText}
-                ► Link: {this.props.recipeDetail.sourceUrl}
+                ► credits:&nbsp; {this.props.recipeDetail.creditsText === null? 'none': this.props.recipeDetail.creditsText }  &nbsp;&nbsp;&nbsp;
+                ► Link: <a href={this.props.recipeDetail.sourceUrl}> {this.props.recipeDetail.sourceUrl} </a> 
               </p>
             </div>
-
+           
             <div>
-              <Link to="/home/recipes">  <button>back to recipes</button>  </Link>
+            <div className={s.esp}>
+              
             </div>
+            {
+              (!this.props.recipeDetail.created_DB) ?  null :
+              <>
+                <button 
+                    className={s.danger} 
+                    value={this.props.recipeDetail.id} 
+                    onClick={(e)=>this.handleRemove(e)}>
+                  delete recipe
+                </button>  &nbsp;&nbsp;&nbsp;
+              </>
+            }              
+              <Link to="/home/recipes">  <button>back to recipes</button>  </Link>
+              <Link to="/home/search">  <button>perform a search</button>  </Link>
+            </div>
+            
           </>       
           }
           </div>
@@ -230,7 +289,8 @@ export const mapDispatchToProps = (dispatch) =>{
     return {
         emptyRecipeDetail: () => dispatch(emptyRecipeDetail()),
         getRecipeDetail: (id) => dispatch(getRecipeDetail(id)),
-        changeAtrib: (attribute, id, valor)=> dispatch(changeAtrib(attribute, id, valor))
+        changeAtrib: (attribute, id, valor)=> dispatch(changeAtrib(attribute, id, valor)),
+        removeRecipe: (id) => dispatch(removeRecipe(id)),
     }
 };
 
