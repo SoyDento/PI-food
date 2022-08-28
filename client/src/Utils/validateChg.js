@@ -1,5 +1,5 @@
 export default function validateChg(i) {
-  let errors = {};
+  let errors = {}
 
   if (i.title) {
     if (!/([A-Z])\w+/g.test(i.title)) {
@@ -14,7 +14,7 @@ export default function validateChg(i) {
   };
 
   if (i.healthScore) {
-    if (i.healthScore >0 || i.healthScore <101) {
+    if (i.healthScore < 0 || i.healthScore > 100) {
       errors.healthScore = '* healthScore must be within a range of 0 to 100'
     } else if (!typeof i.healthScore === 'number') {
       errors.healthScore = '* healthScore can only be a number'
@@ -22,13 +22,13 @@ export default function validateChg(i) {
   };
 
   if (i.veryHealthy) {
-    if (!typeof i.veryHealthy === 'boolean') {
+    if (i.veryHealthy !== 'true' && i.veryHealthy !== 'false') {
       errors.veryHealthy = `* veryHealthy can only be 'true' or 'false'`
     }
   };
 
   if (i.cheap) {
-    if (!typeof i.cheap === 'boolean') {
+    if (i.cheap !== 'true' && i.cheap !== 'false') {
       errors.cheap = `* cheap can only be 'true' or 'false'`
     }
   };

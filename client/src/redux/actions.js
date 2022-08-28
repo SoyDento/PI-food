@@ -30,6 +30,8 @@ export const CLOSE_RECIPE = 'CLOSE_RECIPE';
 
 export const CHANGE_AT = 'CHANGE_AT';
 
+export const ILIKED_RECIPE = 'ILIKED_RECIPE';
+
 //====================================//
 
 
@@ -301,5 +303,11 @@ export function changeAtrib (attribute, id, valor) {
           })
       .then(res => res.json())
       .then(json => {  dispatch({type: CHANGE_AT, payload: json})  })
+  }
+}
+
+export function iliked () {
+  return{
+    type: ILIKED_RECIPE
   }
 }

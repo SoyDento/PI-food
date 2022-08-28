@@ -14,6 +14,7 @@ import {
     GET_DB_RECIPES,
     REMOVE_RECIPE,
     CLOSE_RECIPE,
+    ILIKED_RECIPE,
     CHANGE_AT}
      from "./actions";
 
@@ -160,6 +161,16 @@ function rootReducer(state = initialState, action){
         allRecipes: [...allRecipes, action.payload]
       }
     }
+
+    if(action.type === ILIKED_RECIPE){
+        let recip = state.recipeDetail;
+        recip.aggregateLikes = recip.aggregateLikes + 1;
+        return {
+          ...state,
+          recipeDetail: recip,
+        }
+      }
+
 
     return state;
 

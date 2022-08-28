@@ -6,12 +6,14 @@ import { Link } from "react-router-dom";
 // import { Link, useParams, useLocation } from "react-router-dom";  // para funcional components
 import { emptyRecipeDetail, 
          getRecipeDetail, 
-         changeAtrib, 
+         changeAtrib,
+         iliked, 
          removeRecipe } from "../redux/actions";
-import Spinner from './Spinner'
+// import Spinner from './Spinner'
 import s from "../styles/RecipeDetail.module.css";
 import validateChg from '../Utils/validateChg.js';
 import instructions from '../Utils/instructions';
+import image from '../img/dedo.png';
 
 
 export class RecipeDetail extends Component {
@@ -24,6 +26,7 @@ export class RecipeDetail extends Component {
         equipment: '',
         attribute: '',
         data: '',
+        status: 'on',
         params: this.props.match.params.id,
         // query: ()=>{
         //   let queryString = window.location.search;
@@ -34,32 +37,11 @@ export class RecipeDetail extends Component {
         // },
       };      
       // this.ejectClose = this.ejectClose.bind(this);
-    };
-    
+    };    
     componentDidMount(){
         this.props.emptyRecipeDetail();  // o poner esto en un desmonte de componente
         this.props.getRecipeDetail(this.state.params); // o this.props.match.params.id  como argumento
-        
-        setTimeout(function(){   
-          // console.log(this.props.recipeDetail.title);
-          // if (this.props.recipeDetail.analyzedInstructions) {
-          //   let { st, ing, equip } = instructions(this.props.recipeDetail.analyzedInstructions);
-          //   this.setState({
-          //     ...this.state,
-          //     steps: st
-          //   });  
-          //   this.setState({
-          //     ...this.state,
-          //     ingredients: ing
-          //   });  
-          //   this.setState({
-          //     ...this.state,
-          //     equipment: equip
-          //   });
-          // };           
-
-        }, 15500);        
-        
+               
     };
     // componentDidUpdate(){
     //   this.props.getRecipeDetail(this.state.params);
@@ -82,21 +64,33 @@ export class RecipeDetail extends Component {
     handleSubmit = (e)=> {
       // e.preventDefault();
       // console.log(attribute);  console.log(data);
-      let objError = validateChg({[this.state.attribute]: this.state.data});
-      if (objError.name || objError.nickname || objError.birthday || objError.img || objError.status ) {
-        alert(`Danger: ${ JSON.stringify(objError) } !!!`); // console.log(objError);
+      if (this.state.attribute.length === 0) {
+        alert(`Danger: did not select the attribute to modify. Select it !!!`);
       } else {
-        this.props.changeAtrib(this.state.attribute, this.props.recipeDetail.id, this.state.data);
-        console.log("dispacho el cambio de atributo");
-      };
+        let objError = validateChg({[this.state.attribute]: this.state.data});
+        console.log(objError);
+        if (objError.title || objError.healthScore || objError.veryHealthy || objError.image || objError.cheap) {
+          alert(`Danger: ${ JSON.stringify(objError) } !!!`); // console.log(objError);
+        } else {
+          this.props.changeAtrib(this.state.attribute, this.props.recipeDetail.id, this.state.data);
+          console.log("dispacho el cambio de atributo");
+        };
+      }
+      
     };
     handleLike = () => {
+      this.props.iliked();
       this.props.changeAtrib('aggregateLikes', this.props.recipeDetail.id, 1);
-        console.log("se agrego un like a la receta");
+      this.setState({
+        ...this.state,
+        status: 'off',
+      }); 
+      console.log("se agrego un like a la receta");
     };
     handleRemove = (e)=> {
-      e.preventDefault();
+      // e.preventDefault();
       this.props.removeRecipe(e.target.value);
+      this.props.emptyRecipeDetail();  // vacia recipeDetail 
     };
     // handleReturn = () => {
     //   history.push(`/home/recipes?data=${this.state.query()}`); // se usa para rederigir desde el código
@@ -106,16 +100,10 @@ export class RecipeDetail extends Component {
       let { st, ing, equip } = instructions(this.props.recipeDetail.analyzedInstructions);
             this.setState({
               ...this.state,
-              steps: st
-            });  
-            this.setState({
-              ...this.state,
-              ingredients: ing
-            });  
-            this.setState({
-              ...this.state,
-              equipment: equip
-            });
+              steps: st,
+              ingredients: ing,
+              equipment: equip,
+            });              
       console.log(st); console.log(ing); console.log(equip);
       console.log(this.state);
     };
@@ -125,60 +113,64 @@ export class RecipeDetail extends Component {
     render() {
       return (
         <div className={s.RecipeDetail} key="recipe">
-          <h1>Recipe Details</h1>
+          
           <div key='detail'>
-          {!this.props.recipeDetail ?  <Spinner/> :          
+          {!this.props.recipeDetail.hasOwnProperty('title')  ?  'the recipe was deleted' :          
           <>
-            <h3>{this.props.recipeDetail.title}</h3>
+            <div className={s.titleDetail}>{this.props.recipeDetail.title}</div>
 
             <img className={s.RecipeDetailPhoto} src={this.props.recipeDetail.image} alt="" />
 
             <p>
               ► Very Healthy: &nbsp;{this.props.recipeDetail.veryHealthy? 'yes':'no'} &nbsp;&nbsp;&nbsp;
               ► Cheap: &nbsp;{this.props.recipeDetail.cheap? 'yes':'no'} &nbsp;&nbsp;&nbsp;
-              ► Health Score: &nbsp;{this.props.recipeDetail.healthScore}
+              ► Likes: &nbsp;{this.props.recipeDetail.aggregateLikes}   
             </p>
             <p>
               ► Ready In Minutes: &nbsp;{this.props.recipeDetail.readyInMinutes} &nbsp;&nbsp;&nbsp;
               ► Servings: &nbsp;{this.props.recipeDetail.servings} &nbsp;people&nbsp;&nbsp;
-              ► Likes: &nbsp;{this.props.recipeDetail.aggregateLikes}              
+              ► Health Score: &nbsp;{this.props.recipeDetail.healthScore}                         
             </p>
-            <div className={s.likeContainer}>
-                <div className={`${s.likeCnt} ${s.unchecked} ${s.button}`} id={s.likeCnt}>
-                  <i className={`${s.likeBtn} ${s.materialIcons}`}>Likes
-                    <input
+            {
+              (this.state.status === 'off') ? null :
+              <div className={s.likeContainer}>
+                <div className={`${s.likeCnt} ${s.unchecked} `} >
+                  <img src={image} height="50px" alt=""/>
+                  <i className={`${s.likeBtn} ${s.materialIcons}`}>
+                    <input  className={`${s.unchecked} ${s.likeBtn}`}
                                     value="LIKE"
                                     onClick={()=> this.handleLike()}
                                     type="button"/>
                   </i>
                 </div>
             </div>
+            }            
             <div key='diets'>
               <p>diets: </p>
-              <h5>
+              <h3>
               {
                 !this.props.recipeDetail.diets ? null :
                   this.props.recipeDetail.diets.map(o=> ' - ' + o + ' - ')
               }
-              </h5>
+              </h3>
             </div>
             <div key='cuisines'>
               <p>cuisines: </p>
-              <h5>
+              <h3>
               {
                 !this.props.recipeDetail.cuisines ? null :
                   this.props.recipeDetail.cuisines.map(o=> ' - ' + o + ' - ')
               }
-              </h5>
+              </h3>
             </div>
             <div key='dishTypes'>
               <p>dish types: </p>
-              <h5>
+              <h3>
               {
                 !this.props.recipeDetail.dishTypes ? null :
                   this.props.recipeDetail.dishTypes.map(o=> ' - ' + o + ' - ')
               }
-              </h5>
+              </h3>
             </div>
             <div>
                     {
@@ -206,41 +198,47 @@ export class RecipeDetail extends Component {
                       </div>
                     }                    
             </div>
+            <div className={s.buttonExtend}>
             {
-              (!this.props.recipeDetail.analyzedInstructions) ? null  :
-              <button className={s.button} onClick={()=> this.handleClick()}>expand your recipe ???</button>
+              (this.state.steps.length > 1) ?  null :
+              <button className={s.button} onClick={()=> this.handleClick()}>wanna expand your recipe ?</button>            
             }
-            
+            </div>        
             {
-              (!this.state.steps) ? null               
+              (!this.state.steps) ? <div>still no steps</div>              
               :
               <div className={s.abstract}>
                 <div className='instructions'>
-                  <h5>INSTRUCTIONS</h5>
-                  <ul>
+                  <h3>INSTRUCTIONS</h3>
+                  <div>
                   {
                     (!this.state.steps) ? null :
-                    this.state.steps.map((e, index)=> <li>Step {index}: {e} </li> )
+                    this.state.steps.map((e, index)=> 
+                    <div key={index}>
+                      <div key={index}>Step {index+1}: {e} </div> 
+                      <br/>
+                    </div>
+                    )
                   }
-                  </ul>
+                  </div>
                 </div>
                 <div className='ingredients'>
-                  <h5>Ingredients:</h5>
-                  <ul>
+                  <h3>Ingredients:</h3>
+                  <h4 key='ingredients'>
                   {
-                    (!this.state.ingredients) ? null :
-                    this.state.ingredients.map((e, index)=> <li> {index}: {e} </li> )
+                    (!this.state.ingredients) ? 'still no ingredients'  :
+                    this.state.ingredients.map( (e)=> ' ' + e + ',' )
                   }
-                  </ul>
+                  </h4>
                 </div>
                 <div className='equipment'>
-                  <h5>Equipment:</h5>
-                  <ul>
+                  <h3>Equipment:</h3>
+                  <div>
                   {
-                    (!this.state.equipment) ? null :
-                    this.state.equipment.map((e, index)=> <li> {index}: {e} </li> )
+                    (!this.state.equipment) ? <div>still no equipment</div>  :
+                    this.state.equipment.map((e, index)=> <div key={index}> {index+1}: {e} </div> )
                   }
-                  </ul>
+                  </div>
                 </div>
               </div>
             }
@@ -291,6 +289,7 @@ export const mapDispatchToProps = (dispatch) =>{
         getRecipeDetail: (id) => dispatch(getRecipeDetail(id)),
         changeAtrib: (attribute, id, valor)=> dispatch(changeAtrib(attribute, id, valor)),
         removeRecipe: (id) => dispatch(removeRecipe(id)),
+        iliked: () => dispatch(iliked()),
     }
 };
 
@@ -347,12 +346,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(RecipeDetail);
 //         <p>status: {recipeDetail.status}</p>
 //         <div key='ocuppations'>
 //           <p>dietss: </p>
-//           <h5>
+//           <h3>
 //           {
 //             !recipeDetail.diets ? <Spinner/> :
 //               recipeDetail.diets.map(o=> ' - ' + o + ' - ')
 //           }
-//           </h5>
+//           </h3>
 //         </div>
 //
 //                 {
