@@ -7,7 +7,18 @@ const { expect } = require('chai');
 
 const agent = session(app);
 const recipe = {
-  title: 'Milanesa a la napolitana',
+    id: 0,
+    title: "Bis Homemade Garlicrrrand Basil French Fries",
+    image: "https://spoonacular.com/recipeImages/715594-312x231.jpg",
+    veryHealthy: true,
+    cheap: false,
+    healthScore: 77,
+    creditsText: "Jen West",
+    aggregateLikes: 1669,
+    readyInMinutes: 45,
+    servings: 2,
+    sourceUrl: "http://www.pinkwhen.com/homemade-french-fries/",
+    analyzedInstructions: [],
 };
 
 describe('Recipe routes', () => {
@@ -15,7 +26,7 @@ describe('Recipe routes', () => {
   .catch((err) => {
     console.error('Unable to connect to the database:', err);
   }));
-  beforeEach(() => Recipe.sync({ force: true })
+  beforeEach(() => Recipe.sync({ force: false })
     .then(() => Recipe.create(recipe)));
 
   describe('GET /recipes', () => {
@@ -27,45 +38,108 @@ describe('Recipe routes', () => {
         .expect(200)
         .expect('Content-Type', /json/) // podemos testear los headers
         .expect(function (res) {
-          expect(res.body.length).to.eql(10) // testeamos la respuesta con el body
+          expect(res.body.length).to.eql(312) // testeamos la respuesta con el body
         })
     );
     it('should get 200', () =>
-      agent.get('/recipes/2521a12e-f1c2-4b0d-9697-fca6f89de52a')
+      agent.get('/recipe/2')
         .expect(200)
         .expect('Content-Type', /json/) // podemos testear los headers
         .expect(function (res) {
           expect(res.body).to.eql({
-              "id": "2521a12e-f1c2-4b0d-9697-fca6f89de52a",
-              "name": "Matías Dentoni",
-              "img": "https://cdn.elpopular.mx/notas/secciones/mundo/2019/09/19/a-37-anos-del-emoticon-que-todos-conocemos-la-carita-feliz/f64fdc298163368902edd48455f96007.jpg",
-              "nickname": "Matute",
-              "birthday": "31-10-1977",
-              "status": "Alive",
-              "created_DB": true,
-              "occupations": [
-                {
-                  "id": "5f4d4ee7-45ed-4b07-9a5f-f6b765b4be54",
-                  "name": "desempleado",
-                  "CharacterOccupation": {
-                    "createdAt": "2022-07-28T00:22:02.000Z",
-                    "updatedAt": "2022-07-28T00:22:02.000Z",
-                    "characterId": "2521a12e-f1c2-4b0d-9697-fca6f89de52a",
-                    "occupationId": "5f4d4ee7-45ed-4b07-9a5f-f6b765b4be54"
-                  }
-                },
-                {
-                  "id": "6d317822-d457-458f-a553-7db90a7c0fdc",
-                  "name": "escritor",
-                  "CharacterOccupation": {
-                    "createdAt": "2022-07-28T00:22:02.010Z",
-                    "updatedAt": "2022-07-28T00:22:02.010Z",
-                    "characterId": "2521a12e-f1c2-4b0d-9697-fca6f89de52a",
-                    "occupationId": "6d317822-d457-458f-a553-7db90a7c0fdc"
-                  }
+            "id_db": 2,
+            "id": 715594,
+            "title": "Homemade Garlic and Basil French Fries",
+            "image": "https://spoonacular.com/recipeImages/715594-312x231.jpg",
+            "veryHealthy": true,
+            "cheap": false,
+            "healthScore": 77,
+            "creditsText": "Jen West",
+            "aggregateLikes": 1669,
+            "readyInMinutes": 45,
+            "servings": 2,
+            "sourceUrl": "http://www.pinkwhen.com/homemade-french-fries/",
+            "analyzedInstructions": [
+              
+            ],
+            "created_DB": true,
+            "diets": [
+              {
+                "id": 2,
+                "name": "dairy free",
+                "RecipeDiet": {
+                  "createdAt": "2022-08-18T22:33:51.348Z",
+                  "updatedAt": "2022-08-18T22:33:51.348Z",
+                  "recipeIdDb": 2,
+                  "dietId": 2
                 }
-              ]
-            }) // testeamos la respuesta con el body
+              },
+              {
+                "id": 8,
+                "name": "lacto ovo vegetarian",
+                "RecipeDiet": {
+                  "createdAt": "2022-08-18T22:33:51.379Z",
+                  "updatedAt": "2022-08-18T22:33:51.379Z",
+                  "recipeIdDb": 2,
+                  "dietId": 8
+                }
+              },
+              {
+                "id": 9,
+                "name": "vegan",
+                "RecipeDiet": {
+                  "createdAt": "2022-08-18T22:33:51.398Z",
+                  "updatedAt": "2022-08-18T22:33:51.398Z",
+                  "recipeIdDb": 2,
+                  "dietId": 9
+                }
+              }
+            ],
+            "dishTypes": [
+              {
+                "id": 16,
+                "name": "lunch",
+                "RecipeDishType": {
+                  "createdAt": "2022-08-18T22:33:51.393Z",
+                  "updatedAt": "2022-08-18T22:33:51.393Z",
+                  "recipeIdDb": 2,
+                  "dishTypeId": 16
+                }
+              },
+              {
+                "id": 15,
+                "name": "dinner",
+                "RecipeDishType": {
+                  "createdAt": "2022-08-18T22:33:51.390Z",
+                  "updatedAt": "2022-08-18T22:33:51.390Z",
+                  "recipeIdDb": 2,
+                  "dishTypeId": 15
+                }
+              },
+              {
+                "id": 1,
+                "name": "main course",
+                "RecipeDishType": {
+                  "createdAt": "2022-08-18T22:33:51.384Z",
+                  "updatedAt": "2022-08-18T22:33:51.384Z",
+                  "recipeIdDb": 2,
+                  "dishTypeId": 1
+                }
+              }
+            ],
+            "cuisines": [
+              {
+                "id": 6,
+                "name": "American",
+                "RecipeCuisine": {
+                  "createdAt": "2022-08-18T22:33:51.415Z",
+                  "updatedAt": "2022-08-18T22:33:51.415Z",
+                  "recipeIdDb": 2,
+                  "cuisineId": 6
+                }
+              }
+            ]
+          }) // testeamos la respuesta con el body
         })
     );
     it('you should get {} when you passed wrong id', () =>
@@ -75,11 +149,11 @@ describe('Recipe routes', () => {
         })
     );
     it('should get status 200 and an array of recipes that match the dataquery', () =>
-      agent.get('/recipes?data=h')
+      agent.get('/recipes?data=bis')
         .expect(200)
         .expect('Content-Type', /json/) // podemos testear los headers
         .expect(function (res) {
-          expect(res.body.length).to.eql(2) // testeamos la respuesta con el body
+          expect(res.body.length).to.eql(7) // testeamos la respuesta con el body
         })
     );
 
@@ -87,14 +161,20 @@ describe('Recipe routes', () => {
 
   describe('POST /recipes', () => {
     it('should get status 200 and add a character', () =>
-      agent.post('/recipes')
+      agent.post('/recipe')
         .send({
-                name: "Panam",
-                nickname: "wooww",
-                birthday: "10-01-1947",
-                img: "https://media.glamour.es/photos/616f95a2bcde302b0cd8282c/master/w_1600%2Cc_limit/618905.jpg",
-                status: "Alive",
-                occupations: ["press editor","programmer"]
+          id: 0,
+          title: "Bis Homemnd Basil French Fries",
+          image: "https://spoonacular.com/recipeImages/715594-312x231.jpg",
+          veryHealthy: true,
+          cheap: false,
+          healthScore: 77,
+          creditsText: "Jen West",
+          aggregateLikes: 1669,
+          readyInMinutes: 45,
+          servings: 2,
+          sourceUrl: "http://www.pinkwhen.com/homemade-french-fries/",
+          analyzedInstructions: [],
             })
         .expect(200)
     );
@@ -102,18 +182,28 @@ describe('Recipe routes', () => {
 
   describe('PUT /attribute', () => {
     it('should get status 200 and modify the attribute', () =>
-      agent.put('/name?idChar=05f4d0ab-62b8-4097-aeaa-7796c69f26ef&value=Rolo')
+      agent.put('/recipe/aggregateLikes?id=327&value=1')
         .expect(200)
         .expect('Content-Type', /json/) // podemos testear los headers
         .expect(function (res) {
           expect(res.body).to.eql({
-                id: "05f4d0ab-62b8-4097-aeaa-7796c69f26ef",
-                name: "Rolo",
-                img: "https://media.glamour.es/photos/616f95a2bcde302b0cd8282c/master/w_1600%2Cc_limit/618905.jpg",
-                nickname: "Roloman",
-                birthday: "20-11-1997",
-                status: "Alive",
-                created_DB: true
+            "id_db": 327,
+            "id": 715594,
+            "title": "Bis C And Basil French Fries",
+            "image": "https://spoonacular.com/recipeImages/715594-312x231.jpg",
+            "veryHealthy": true,
+            "cheap": false,
+            "healthScore": 77,
+            "creditsText": "Jen West",
+            "aggregateLikes": 2,
+            "readyInMinutes": 45,
+            "servings": 2,
+            "sourceUrl": "http://www.pinkwhen.com/homemade-french-fries/",
+            "analyzedInstructions": [],
+            "created_DB": true,
+            "diets": [],
+            "dishTypes": [],
+            "cuisines": []
               }) // testeamos la respuesta con el body
         })
     );

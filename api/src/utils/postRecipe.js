@@ -9,7 +9,7 @@ let postRecipe = async(obj)=>{
     title = title.split(' ').map(p=> p.slice(0,1).toUpperCase().concat(p.slice(1).toLowerCase())).join(' ')
   } else { title = title[0].toUpperCase().concat(title.slice(1).toLowerCase()) };
 
-  if (cuisines.length > 0) {
+  if (cuisines && cuisines.length > 0) {
     cuisines = cuisines.map((cuis)=>{
       if (cuis.includes(' ')) {
         cuis = cuis.split(' ').map(p=> p.slice(0,1).toUpperCase().concat(p.slice(1).toLowerCase())).join(' ')
@@ -30,16 +30,17 @@ let postRecipe = async(obj)=>{
   
   // await Promise.all( [allDts, allTypes, allCuis] );
 
-  let newsDts = allDts.filter(o=> diets.includes(o.name));
-  let newsDishTypes = allTypes.filter(o=> dishTypes.includes(o.name));
-  let newsCuis = allCuis.filter(o=> cuisines.includes(o.name));
+  if (diets) {let newsDts = allDts.filter(o=> diets.includes(o.name))};
+  if (dishTypes) {let newsDishTypes = allTypes.filter(o=> dishTypes.includes(o.name))};
+  if (cuisines) {let newsCuis = allCuis.filter(o=> cuisines.includes(o.name))};
 
-  let incDiets = newsDts.map( async(d)=> await myrecip.addDiet(d.id) );
-  let incDT = newsDishTypes.map( async(dt)=> await myrecip.addDishType(dt.id) );
-  let incCuis = newsCuis.map( async(c)=> await myrecip.addCuisine(c.id) );
-
-  await Promise.all( [...incDiets, ...incDT, ...incCuis] );
-
+  if (diets) {let incDiets = newsDts.map( async(d)=> await myrecip.addDiet(d.id) )};
+  if (dishTypes) {let incDT = newsDishTypes.map( async(dt)=> await myrecip.addDishType(dt.id) )};
+  if (cuisines) {let incCuis = newsCuis.map( async(c)=> await myrecip.addCuisine(c.id) )};
+  
+  if (diets || dishTypes || cuisines){
+    await Promise.all( [...incDiets, ...incDT, ...incCuis] );
+  };
   let recipeCreated = await Recipe.findOne({
     where: { id_db: myrecip.id_db },
     include: [ Diet, DishType, Cuisine ]

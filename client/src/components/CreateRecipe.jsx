@@ -67,14 +67,6 @@ export default function CreateChar () {
       });
     setError(validate(input));
   };
-  function handleCheck (e) {
-    e.preventDefault();
-    setInput({
-      ...input,
-      status: e.target.value
-    });
-    setError(validate(input));
-  };
   function handleSelect (e) {
     e.preventDefault();    
     // ==== no entiendo porque no me funcionó esta sistematización para más de un input ====
@@ -143,15 +135,35 @@ export default function CreateChar () {
   return(
     <div className={s.bakg}>
       <div className={`${s.cont2}`}>
-        <div className={`${s.bannerText}`} key='bt'>create new recipe</div>
+        <div className={`${s.bannerText}`} key='bt'>create</div>
       </div>
-      <form className={`${s.cards}`} onSubmit={(e)=>handleSubmit(e)}>
+      <form className={`${s.form}`} onSubmit={(e)=>handleSubmit(e)}>
+
+        <div className={s.buttons}>
+          <div className={s.textButton}>complete and press ►</div>
+          <div className={s.esp}></div>
+          {
+            (error.title || error.veryHealthy || error.cheap || error.img ||  
+              error.healthScore || error.creditsText || error.readyInMinutes || 
+              error.analyzedInstructions || error.servings || error.sourceUrl  ) ?
+
+              <button onClick={()=>checking()}>pre-error checking</button>
+              :
+              <div className={s.green} key='s'>
+                <button className={s.green} type="submit">Add Recipe</button>
+              </div>
+          }
+          {/*<div className={`${s.inpt}`}>
+            <input type="reset" value="restore form"/>
+          </div>*/}
+        </div>
 
           <div className={s.cont3}>
 
             <div className={`${s.inpt}`} key='t'> Name: |
               <input
                       name="title" value={input.title}
+                      placeholder='complete...'
                       onChange={(e)=>handleChange(e)}
                       className={error.title?`${s.dangerInp}`:`${s.validInp}`}
                       autoComplete="off"
@@ -162,14 +174,16 @@ export default function CreateChar () {
             </div>
 
             <div className={`${s.inpt}`} key='h'>Is it very very healthy?: |
-              <select name="veryHealthy" onChange={(e)=> handleBoolean(e)}>
+              <select name="veryHealthy" value='default' onChange={(e)=> handleBoolean(e)}>
+                <option value='default' disabled>------select------</option>
                 <option name="veryHealthy" value='true'> true </option>
                 <option name="veryHealthy" value='false'> false </option>
               </select >
             </div>
 
-            <div className={`${s.inpt}`} key='h'>Is very very cheap?: |
-              <select name="cheap" onChange={(e)=> handleBoolean(e)}>
+            <div className={`${s.inpt}`} key='c'>Is very very cheap?: |
+              <select name="cheap" value='default' onChange={(e)=> handleBoolean(e)}>
+                <option value='default' disabled>------select------</option>
                 <option name="cheap" value='true'> true </option>
                 <option name="cheap" value='false'> false </option>
               </select >
@@ -178,18 +192,20 @@ export default function CreateChar () {
             <div className={s.inpt} key='s'> Health Score: |
               <input
                       name="healthScore" value={input.healthScore}
+                      placeholder='complete...'
                       onChange={(e)=>handleChange(e)}
                       className={error.healthScore?`${s.dangerInp}`:`${s.validInp}`}
                       min="1" max="100"
                       type="number" required/>
               <div className={error.healthScore?`${s.danger}`:`${s.valid}`}>
                 {error.healthScore || 'valid data'}
-              </div>
+              </div> 
             </div>
 
-            <div className={s.inpt} key='s'> Ready In Minutes: |
+            <div className={s.inpt} key='r'> Ready In Minutes: |
               <input
                       name="readyInMinutes" value={input.readyInMinutes}
+                      placeholder='complete...'
                       onChange={(e)=>handleChange(e)}
                       className={error.readyInMinutes?`${s.dangerInp}`:`${s.validInp}`}
                       min="1" max="900"
@@ -202,6 +218,7 @@ export default function CreateChar () {
             <div className={`${s.inpt}`} key='i'> Image URL: |
                         <input
                               name="image" value={input.image}
+                              placeholder='complete...'
                               onChange={(e)=>handleChange(e)}
                               className={error.image?`${s.dangerInp}`:`${s.validInp}`}
                               autoComplete="off"
@@ -211,30 +228,15 @@ export default function CreateChar () {
               </div>
             </div>
 
-        </div>
-       
-        <div className={s.cont4}>
-          {
-            (error.title || error.veryHealthy || error.cheap || error.img ||  
-              error.healthScore || error.creditsText || error.readyInMinutes || 
-              error.analyzedInstructions || error.servings || error.sourceUrl  ) ?
-
-              <button onClick={()=>checking()}>pre-error checking</button>
-              :
-              <div className={s.green} key='s'>
-                <button type="submit">Add Character</button>
-              </div>
-          }
-          {/*<div className={`${s.inpt}`}>
-            <input type="reset" value="restore form"/>
-          </div>*/}
-        </div>
+        </div>        
 
       </form>
 
-      <select onChange={(e)=> handleSelect(e)}>
+      <div className={s.text}> Dish Types -you can select several of the options-:</div>
+      <select value='default' onChange={(e)=> handleSelect(e)}>
+        <option value='default' disabled>------select------</option>
         {
-          dishTypesStore.map(o=> <option nane='dishTypes' key={`s${o.id}`} value={o.name}> {o.name} </option>)
+          dishTypesStore.map(dt=> <option key={dt.id} value={dt.name}> {dt.name} </option> )
         }
       </select >
       { input.dishTypes?.map( (el, index) =>
@@ -247,17 +249,11 @@ export default function CreateChar () {
         {error.dishTypes || 'valid data'}
       </div>
 
-      <select onChange={(e)=> handleSelect(e)}>
+      <div className={s.text}> Diets -you can select several of the options-:</div>
+      <select value='default' onChange={(e)=> handleSelect(e)}>
+        <option value='default' disabled>------select------</option>
         {
-          dietsStore.map(o=>{ 
-            return(
-              <div>                  
-                  <label key={o.id}><input
-                      name='diets' value={o.name}
-                      onChange={(e)=>handleCheck(e)}
-                      type="checkbox"/> {o.name} </label>
-              </div>          
-          )})
+          dietsStore?.map(d=> <option key={d.id} value={d.name}> {d.name} </option> )
         }
       </select >
       { input.diets?.map( (el, index) =>
@@ -270,9 +266,10 @@ export default function CreateChar () {
         {error.diets || 'valid data'}
       </div>     
       
-      <div className={`${s.inpt}`} key='c'> Put if it is typical of a particular cuisine or belongs to the cuisine of a particular region or regions. In the case of belonging to more than one kitchen, complete the input separating the words with a hyphen. Do not use a space, except in the case of compound names: |
+      <div className={`${s.inpt}`} key='cuisine'> Put if it is typical of a particular cuisine or belongs to the cuisine of a particular region or regions. In the case of belonging to more than one cuisine, complete the input separating the words with a hyphen. Do not use a space, except in the case of compound names: |
                         <input
                               name="cuisines" value={input.cuisines}
+                              placeholder='complete...'
                               onChange={(e)=>handleChange(e)}
                               className={error.cuisines?`${s.dangerInp}`:`${s.validInp}`}
                               autoComplete="off"
@@ -281,10 +278,10 @@ export default function CreateChar () {
                 {error.cuisines || 'valid data'}
               </div>
       </div>
-      <div className={`${s.box}`} key='c'> : List of existing cuisines from the database:
+      <div className={`${s.box}`} key='c'> List of existing cuisines from the database:
         <h4>
           {
-            cuisinesStore.map(c=> ' - ' + c + ' - ')
+            cuisinesStore?.map(c=> ' ' + c.name + ',  ')
           }
         </h4>
       </div>
