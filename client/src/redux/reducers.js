@@ -143,10 +143,12 @@ function rootReducer(state = initialState, action){
         }
     }
     if(action.type === CLOSE_RECIPE){
-        let filterClose = state.queryRecipes.filter(c=> c.id !== action.payload);
-        console.log(filterClose);
+        let filterClose = state.queryRecipes.filter(c=> c.id !== parseInt(action.payload));
+        let filterClose2 = state.recipes.filter(c=> c.id !== parseInt(action.payload));
+        console.log(filterClose2); console.log(action.payload);
         return {
             ...state,
+            recipes: filterClose2,
             queryRecipes: filterClose,
             outRecipe: action.payload,
         }

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import validate from '../Utils/validate.js';
 import convertInput from '../Utils/convertInput.js';
+import analyzedInstruc from '../Utils/analyzedInstruc.js';
 import { useHistory } from 'react-router-dom';
 import { postRecipe, getDiets, getCuisines, getDishTypes } from '../redux/actions';
 import s from '../styles/CreateRecipe.module.css';
@@ -40,6 +41,13 @@ export default function CreateRecipe () {
     id:"",title:"",image:"",veryHealthy:"",cheap:"",healthScore:"",creditsText: "",readyInMinutes:"",
     servings:"",sourceUrl:"",analyzedInstructions:"",diets:"",dishTypes:"",cuisines:""
   });
+  const [steps, setSteps] = useState({
+    step1: '', ing1: [], eq1: [],
+    step2: '', ing2: [], eq2: [],
+    step3: '', ing3: [], eq3: [],
+    step4: '', ing4: [], eq4: [],
+    step5: '', ing5: [], eq5: [],
+  });
 
   useEffect(()=>{
     dispatch(getDiets());
@@ -70,6 +78,13 @@ export default function CreateRecipe () {
     e.preventDefault();
     console.log('value: ', e.target.value);     
     let [name, value] = e.target.value.split('_');
+    // ====  Falta probar  =====
+    // if (!input[name].includes(value)) {
+    //   setInput({
+    //     ...input,
+    //     [name]: [...input[name], value]
+    //   }); 
+    // };
     if(name === 'diets') {
       if (!input.diets.includes(value)) {
         setInput({
@@ -120,10 +135,29 @@ export default function CreateRecipe () {
         if (error.title || error.cuisines || error.readyInMinutes || error.healthScore || error.dishTypes || error.veryHealthy || error.cheap || error.image || error.servings || error.analyzedInstructions ) {
           alert('Danger: review the data. Errors were found !!!')
         };
-        alert('Advance. If the "add recipe" button appears, click it. Otherwise check the data, correct if necessary and check again.')
-  
+        alert('Advance. If the "add recipe" button appears, click it. Otherwise check the data, correct if necessary and check again.')  
     }, 2000);
-    };
+  };
+  function handleChg(e) {
+    e.preventDefault();  // console.log(e.target.name);
+    setSteps({
+        ...steps,
+        [e.target.name]: e.target.value,
+      });
+    // console.log(steps);
+  };
+  function handleInstruct(e){
+    e.preventDefault();
+    let {step1,ing1,eq1,step2,ing2,eq2,step3,ing3,eq3,step4,ing4,eq4,step5,ing5,eq5} = steps;
+    console.log(steps);
+    let analiz = analyzedInstruc(step1,ing1,eq1,step2,ing2,eq2,step3,ing3,eq3,step4,ing4,eq4,step5,ing5,eq5);
+    console.log(analiz);
+    setInput({
+      ...input,
+      analyzedInstructions: analiz,
+    });
+  };
+  
 
   return(
     <div className={s.bakg}>
@@ -155,8 +189,7 @@ export default function CreateRecipe () {
 
             <div className={`${s.inpt}`} key='t'> Name: |
               <input
-                      name="title" value={input.title}
-                      placeholder='complete...'
+                      name="title" value={input.title}   placeholder='complete...'
                       onChange={(e)=>handleChange(e)}
                       className={error.title?`${s.dangerInp}`:`${s.validInp}`}
                       autoComplete="off"
@@ -192,12 +225,10 @@ export default function CreateRecipe () {
 
             <div className={s.inpt} key='s'> Health Score: |
               <input
-                      name="healthScore" value={input.healthScore}
-                      placeholder='complete...'
+                      name="healthScore" value={input.healthScore}  placeholder='complete...'
                       onChange={(e)=>handleChange(e)}
                       className={error.healthScore?`${s.dangerInp}`:`${s.validInp}`}
-                      min="1" max="100"
-                      type="number" required/>
+                      min="1" max="100"   type="number" required/>
               <div className={error.healthScore?`${s.danger}`:`${s.valid}`}>
                 {error.healthScore || 'valid data'}
               </div> 
@@ -218,25 +249,21 @@ export default function CreateRecipe () {
 
             <div className={s.inpt} key='sv'> Servings: |
               <input
-                      name="servings" value={input.servings}
-                      placeholder='complete...'
-                      onChange={(e)=>handleChange(e)}
-                      className={error.servings?`${s.dangerInp}`:`${s.validInp}`}
-                      min="1" max="50"
-                      type="number"/>
+                name="servings" value={input.servings}    placeholder='complete...'
+                onChange={(e)=>handleChange(e)}
+                className={error.servings?`${s.dangerInp}`:`${s.validInp}`}
+                min="1" max="50"     type="number"/>
               <div className={error.servings?`${s.danger}`:`${s.valid}`}>
                 {error.servings || 'valid data'}
               </div>
             </div>
             
             <div className={`${s.inpt}`} key='i'> Image URL: |
-                        <input
-                              name="image" value={input.image}
-                              placeholder='complete...'
-                              onChange={(e)=>handleChange(e)}
-                              className={error.image?`${s.dangerInp}`:`${s.validInp}`}
-                              autoComplete="off"
-                              type="text"  />
+              <input
+                name="image" value={input.image}   placeholder='complete...'
+                onChange={(e)=>handleChange(e)}
+                className={error.image?`${s.dangerInp}`:`${s.validInp}`}
+                autoComplete="off"      type="text"  />
               <div className={error.image?`${s.danger}`:`${s.valid}`}>
                 {error.image || 'valid data'}
               </div>
@@ -287,13 +314,11 @@ export default function CreateRecipe () {
       
       <div className={`${s.form}`} key='cuisine'> 
               <div className={`${s.inpt}`} >State whether it is typical of a particular cuisine or belongs to the cuisine of a region or regions. In the case of belonging to more than one cuisine, separate each cuisine with a hyphen. Warning: Do not use a space, except in the case of compound names: |</div>
-                          <input
-                              name="cuisines" value={input.cuisines}
-                              placeholder='complete...'
-                              onChange={(e)=>handleChange(e)}
-                              className={error.cuisines?`${s.dangerInp}`:`${s.validInp}`}
-                              autoComplete="off"
-                              type="text"  />
+                  <input
+                      name="cuisines" value={input.cuisines}  placeholder='complete...'
+                      onChange={(e)=>handleChange(e)}
+                      className={error.cuisines?`${s.dangerInp}`:`${s.validInp}`}
+                      autoComplete="off"     type="text"  />
               <div className={error.cuisines?`${s.danger}`:`${s.valid}`}>
                 {error.cuisines || 'valid data'}
               </div>
@@ -307,6 +332,35 @@ export default function CreateRecipe () {
         </h4>
       </div>
       <h3>* If the region or cuisine is in the list, please copy it as it appears there.</h3>
+
+      <form className={`${s.form} ${s.form2}`} onSubmit={(e)=>handleInstruct(e)}>
+        <div className={s.box7}>
+            <div className={`${s.inpt}`} key='s1'> Step 1: 
+              <input
+                      name="step1" value={steps.step1}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.step}
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <div className={`${s.inpt}`} key='i1'> Put the ingredients in step 1. Separate with script"-": 
+              <input
+                      name="ing1" value={steps.ing1}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.ingyeq}
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <div className={`${s.inpt}`} key='e1'> Put the equipment in step 1. Separate with script"-": 
+              <input
+                      name="eq1" value={steps.eq1}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.ingyeq}
+                      autoComplete="off"     type="text"/>              
+            </div>
+        </div>
+
+         
+            <div className={s.green} key='s'>
+                  <button className={s.green} type="submit">confirm steps</button>
+            </div>     
+
+      </form>
 
   </div>
   )

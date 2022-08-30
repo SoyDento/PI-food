@@ -2,8 +2,8 @@ import React  from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getDbRecipes,
          getDiets,
-         getDishTypes         
-         } from "../redux/actions";
+         getDishTypes,
+         closeRecipe    } from "../redux/actions";
 // import Spinner from "./Spinner";
 import Card from './Card.jsx';
 import Paginated from './Paginated.jsx';
@@ -118,9 +118,9 @@ function Home() {
   };
   function ejectClose(e) {
     e.preventDefault(); 
-    // console.log(e.target.value);
-    // dispatch( closeRecipe(e.target.value) );
-    let filterClose = state.allReci.filter(c=> c.id !== e.target.value);   
+    console.log(e.target.value);
+    dispatch( closeRecipe(e.target.value) );
+    let filterClose = state.allReci.filter(c=> c.id !== parseInt(e.target.value));   
     setState({
       ...state,
       allReci: filterClose,
