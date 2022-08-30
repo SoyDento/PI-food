@@ -33,6 +33,7 @@ const recIDget = async(req, res, next)=>{
 
 const recPost = async(req, res, next)=>{
   try {
+    console.log('input en controllers API: ',req.body);
     let c = await postRecipe(req.body) || {};
     res.send(c)   //    petición probada !!!!!! --
   } catch (e) { next(e) }

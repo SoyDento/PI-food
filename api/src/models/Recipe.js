@@ -25,9 +25,11 @@ module.exports = (sequelize) => {
     },
     veryHealthy: {
       type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     cheap: {
       type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     healthScore: {
       type: DataTypes.INTEGER,

@@ -28,11 +28,11 @@ export class RecipeDetail extends Component {
         data: '',
         status: 'on',
         params: this.props.match.params.id,
-        // query: ()=>{
+        query: this.props.history.location.search.replace('?creat=',''),
+        // query2: ()=>{
         //   let queryString = window.location.search;
         //   let urlParams = new URLSearchParams(queryString);
         //   let q = urlParams.get('creat');
-        //   console.log(q);
         //   return q;
         // },
       };      
@@ -41,7 +41,8 @@ export class RecipeDetail extends Component {
     componentDidMount(){
         this.props.emptyRecipeDetail();  // o poner esto en un desmonte de componente
         this.props.getRecipeDetail(this.state.params); // o this.props.match.params.id  como argumento
-               
+               console.log(Number(this.state.query));
+              //  console.log(this.state.query2());
     };
     // componentDidUpdate(){
     //   this.props.getRecipeDetail(this.state.params);
@@ -172,9 +173,10 @@ export class RecipeDetail extends Component {
               }
               </h3>
             </div>
+            <br/>
             <div>
                     {
-                      (!this.props.recipeDetail.created_DB) ?  null :
+                      ( Number(this.state.query) !== 0 ) ?  null :
                       <div className='change'>
                         <h3>modify recipe attributes</h3>
 
@@ -254,7 +256,7 @@ export class RecipeDetail extends Component {
               
             </div>
             {
-              (!this.props.recipeDetail.created_DB) ?  null :
+              (Number(this.state.query) !== 0) ?  null :
               <>
                 <button 
                     className={s.danger} 

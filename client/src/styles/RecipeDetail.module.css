@@ -40,7 +40,7 @@
 .likeContainer{
   position: absolute; 
   left: 50%; 
-  top: 87%; 
+  top: 30rem; 
 }
 .likeCnt{  
   position: absolute; 
@@ -56,7 +56,7 @@
   color: rgb(68, 11, 237);
   position: absolute; 
   left: 50%; 
-  top: 80%;   
+  top: 1.5rem;   
   cursor: pointer;
 }
 

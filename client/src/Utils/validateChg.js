@@ -4,7 +4,7 @@ export default function validateChg(i) {
   if (i.title) {
     if (!/([A-Z])\w+/g.test(i.title)) {
       errors.title = '* title requires at least one uppercase letter'
-    } else if (i.title.length > 3) {
+    } else if (i.title.length  < 3) {
       errors.title = '* title must contain more than three characters'
     } else if (/(?=.*[0-9])/.test(i.title)) {
       errors.title = '* title should not contain numbers, only words'

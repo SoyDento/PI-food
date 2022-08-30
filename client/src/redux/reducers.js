@@ -113,7 +113,6 @@ function rootReducer(state = initialState, action){
     if(action.type === POST_RECIPE){
         return {
             ...state,
-            newChar: action.payload
         }
     }
     if(action.type === GET_CUISINES){

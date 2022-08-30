@@ -225,18 +225,19 @@ export function getCuisines(){
 }
 
 //====================================//
-
+  
 export function postRecipe(body){
+    console.log('input en actions REDUX: ', body);
     return function(dispatch){
         // return axios.post(`https://localhost:3001/postRecipes/`,body)
-        // .then(json => {  dispatch({type: POST_RECIPE, payload: json})  })
-        return fetch(`http://localhost:3001/recipes`, {
+        // .then(json => {  dispatch({type: POST_RECIPE})  })
+        return fetch(`http://localhost:3001/recipe`, {
             method: 'POST', // or 'PUT'
             body: JSON.stringify(body), // data can be `string` or {object}!
             headers:{
               'Content-Type': 'application/json'
             }
-          }).then(res => dispatch({type: POST_RECIPE, payload: res.json()}) )
+          }).then(res => dispatch({type: POST_RECIPE}) )
           .catch(error => console.error('Error:', error))
           .then(response => console.log('Success:', response));
     }

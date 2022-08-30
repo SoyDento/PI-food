@@ -47,7 +47,7 @@
 }
 .danger{
   color: red;
-  font-size: 1.7rem;
+  font-size: 1rem;
 }
 .valid{
   color: green;
@@ -66,4 +66,13 @@
 .inpt{
   margin: 1.5rem;
   color: white;
+}
+.boxClose {
+  display: block;
+  flex-direction: row-reverse;
+}
+.itemClose {
+  display: flex;
+  height: 20px;
+  align-items: center;
 }
