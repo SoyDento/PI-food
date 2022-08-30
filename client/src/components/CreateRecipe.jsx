@@ -313,7 +313,7 @@ export default function CreateRecipe () {
       </div>     
       
       <div className={`${s.form}`} key='cuisine'> 
-              <div className={`${s.inpt}`} >State whether it is typical of a particular cuisine or belongs to the cuisine of a region or regions. In the case of belonging to more than one cuisine, separate each cuisine with a hyphen. Warning: Do not use a space, except in the case of compound names: |</div>
+              <div className={`${s.inpt}`} >State whether it is typical of a particular cuisine or belongs to the cuisine of a region or regions. In the case of belonging to more than one cuisine, separate each cuisine with a hyphen. Warning: Do not use a space, except in the case of compound names: </div>
                   <input
                       name="cuisines" value={input.cuisines}  placeholder='complete...'
                       onChange={(e)=>handleChange(e)}
@@ -354,13 +354,110 @@ export default function CreateRecipe () {
                       autoComplete="off"     type="text"/>              
             </div>
         </div>
-
-         
-            <div className={s.green} key='s'>
-                  <button className={s.green} type="submit">confirm steps</button>
-            </div>     
+        <div className={s.box7}>
+            <div className={`${s.inpt}`} key='s2'> Step 2: 
+              <input
+                      name="step2" value={steps.step2}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.step}
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <div className={`${s.inpt}`} key='i2'> Put the ingredients in step 2. Separate with script"-": 
+              <input
+                      name="ing2" value={steps.ing2}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.ingyeq}
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <div className={`${s.inpt}`} key='e2'> Put the equipment in step 2. Separate with script"-": 
+              <input
+                      name="eq2" value={steps.eq2}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.ingyeq}
+                      autoComplete="off"     type="text"/>              
+            </div>
+        </div>
+        <div className={s.box7}>
+            <div className={`${s.inpt}`} key='s3'> Step 3: 
+              <input
+                      name="step3" value={steps.step3}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.step}
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <div className={`${s.inpt}`} key='i3'> Put the ingredients in step 3. Separate with script"-": 
+              <input
+                      name="ing3" value={steps.ing3}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.ingyeq}
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <div className={`${s.inpt}`} key='e3'> Put the equipment in step 3. Separate with script"-": 
+              <input
+                      name="eq3" value={steps.eq3}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.ingyeq}
+                      autoComplete="off"     type="text"/>              
+            </div>
+        </div>
+        <div className={s.box7}>
+            <div className={`${s.inpt}`} key='s4'> Step 4: 
+              <input
+                      name="step4" value={steps.step4}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.step}
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <div className={`${s.inpt}`} key='i4'> Put the ingredients in step 4. Separate with script"-": 
+              <input
+                      name="ing4" value={steps.ing4}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.ingyeq}
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <div className={`${s.inpt}`} key='e4'> Put the equipment in step 4. Separate with script"-": 
+              <input
+                      name="eq4" value={steps.eq4}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.ingyeq}
+                      autoComplete="off"     type="text"/>              
+            </div>
+        </div>
+        <div className={s.box7}>
+            <div className={`${s.inpt}`} key='s5'> Step 5: 
+              <input
+                      name="step5" value={steps.step5}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.step} 
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <div className={`${s.inpt}`} key='i5'> Put the ingredients in step 5. Separate with script"-": 
+              <input
+                      name="ing5" value={steps.ing5}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.ingyeq}
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <div className={`${s.inpt}`} key='e5'> Put the equipment in step 5. Separate with script"-": 
+              <input
+                      name="eq5" value={steps.eq5}   placeholder='complete...'
+                      onChange={(e)=>handleChg(e)}  className={s.ingyeq}
+                      autoComplete="off"     type="text"/>              
+            </div>
+            <br/>
+        </div>
+        
+        <div className={s.buttons} key='s'>             
+              <button className={s.green} type="submit">confirm steps</button>
+        </div>     
 
       </form>
+
+      <div className={s.buttons}>
+          <div className={s.textButton}>press ►</div>
+          <div className={s.esp}></div>
+          {
+            (error.title || error.veryHealthy || error.cheap || error.img ||  
+              error.healthScore || error.creditsText || error.readyInMinutes || 
+              error.analyzedInstructions || error.servings || error.sourceUrl  ) ?
+
+              <button onClick={()=>checking()}>pre-error checking</button>
+              :
+              <div className={s.green} key='s'>
+                <button className={s.green} type="submit">Add Recipe</button>
+              </div>
+          }
+      </div>
+      
 
   </div>
   )

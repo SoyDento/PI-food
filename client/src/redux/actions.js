@@ -245,7 +245,7 @@ export function postRecipe(body){
 
 //====================================//
 
-export function getDbRecipes(){
+export function getAllrecipes(){
     return function(dispatch) {
         return fetch(`http://localhost:3001/recipes`)
         .then(res => res.json())

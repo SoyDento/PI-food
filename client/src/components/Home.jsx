@@ -1,6 +1,6 @@
 import React  from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDbRecipes,
+import { getAllrecipes,
          getDiets,
          getDishTypes,
          closeRecipe    } from "../redux/actions";
@@ -36,14 +36,14 @@ function Home() {
   const paginated = (numeroPagina) => setPage(numeroPagina);
 
   // React.useEffect(()=>{  ----> Lo reemplaze xq me hacia bucle
-  //     dispatch(getDbRecipes());
+  //     dispatch(getAllrecipes());
   //     dispatch(getDiets());
   //     dispatch(getDishTypes());
   //     set...
   // },[dispatch]);  Repite la accion 4 veces, en cambio la opcion de abajo lo hace solo una vez x cada recarga. Optimiza acciones!!!
 
   React.useEffect(()=>{
-    dispatch(getDbRecipes());
+    dispatch(getAllrecipes());
   },[dispatch]);
   React.useEffect(()=>{
     dispatch(getDiets());
@@ -108,7 +108,7 @@ function Home() {
     setPage(1);
   }
   const handleRestart = () => {
-    // dispatch(getDbRecipes());   
+    // dispatch(getAllrecipes());   
     setState({
       ...state,
       originRecipes: recipes,

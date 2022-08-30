@@ -18,6 +18,9 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        is: /([A-Z])\w+/g,
+      }
     },
     image: {
       type: DataTypes.TEXT,
@@ -34,6 +37,10 @@ module.exports = (sequelize) => {
     healthScore: {
       type: DataTypes.INTEGER,
       defaultValue: 1,
+      validate: {
+        max: 100,                  // solo permite valores <= 100
+        min: 0,
+      }
     },
     creditsText: {
       type: DataTypes.STRING,

@@ -1,27 +1,40 @@
-import React from "react";
+import React, {Component} from "react";
+import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
+import { getAllrecipes } from "../redux/actions";
 import logo from "../img/logo.png";
 import s from "../styles/Landing.module.css";
 
 
-function Landing(props) {
+class Landing extends Component {
+
+  componentDidMount(){
+    this.props.getAllrecipes();      
+  };
   
-  return (
-    <div className={s.Landing}>
-      <img src={logo} alt="" className={s.LandingLogo} width="600px" />
-      <br/>
-      <Link  to="/home/recipes">
-                  <div className={`${s.ac}`}>
-                    <div className={`${s.arrowContainer}`}>
-                        <div className={`${s.arrow}`}></div>
-                        <div className={`${s.arrow}`}></div>
-                        <div className={`${s.arrow}`}></div>
+  render() {
+    return (
+      <div className={s.Landing}>
+        <img src={logo} alt="" className={s.LandingLogo} width="600px" />
+        <br/>
+        <Link  to="/home/recipes">
+                    <div className={`${s.ac}`}>
+                      <div className={`${s.arrowContainer}`}>
+                          <div className={`${s.arrow}`}></div>
+                          <div className={`${s.arrow}`}></div>
+                          <div className={`${s.arrow}`}></div>
+                      </div>
                     </div>
-                  </div>
-       </Link>
-    </div>
-  );
-}
+         </Link>
+      </div>
+    );
+  }  
+};
 
+export const mapDispatchToProps = (dispatch) =>{
+  return {
+      getAllrecipes: () => dispatch(getAllrecipes()),
+  }
+};
 
-export default Landing;
+export default connect(null, mapDispatchToProps)(Landing);
