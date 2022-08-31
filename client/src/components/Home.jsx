@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllrecipes,
          getDiets,
          getDishTypes,
-         closeRecipe    } from "../redux/actions";
+        //  closeRecipe   
+         } from "../redux/actions";
 // import Spinner from "./Spinner";
 import Card from './Card.jsx';
 import Paginated from './Paginated.jsx';
