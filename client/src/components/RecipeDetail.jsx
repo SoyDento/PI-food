@@ -207,14 +207,14 @@ export class RecipeDetail extends Component {
             }
             </div>        
             {
-              (!this.state.steps) ? <div>still no steps</div>              
+              (!this.state.steps) ? null             
               :
               <div className={s.abstract}>
                 <div className='instructions'>
                   <h3>INSTRUCTIONS</h3>
                   <div>
                   {
-                    (!this.state.steps) ? null :
+                    (!this.state.steps.length > 0) ? null :
                     this.state.steps.map((e, index)=> 
                     <div key={index}>
                       <div key={index}>Step {index+1}: {e} </div> 
@@ -228,7 +228,7 @@ export class RecipeDetail extends Component {
                   <h3>Ingredients:</h3>
                   <h4 key='ingredients'>
                   {
-                    (!this.state.ingredients) ? 'still no ingredients'  :
+                    (!this.state.ingredients.length > 0) ? 'still no ingredients'  :
                     this.state.ingredients.map( (e)=> ' ' + e + ',' )
                   }
                   </h4>
@@ -237,7 +237,7 @@ export class RecipeDetail extends Component {
                   <h3>Equipment:</h3>
                   <div>
                   {
-                    (!this.state.equipment) ? <div>still no equipment</div>  :
+                    (!this.state.equipment.length > 0) ? <div>still no equipment</div>  :
                     this.state.equipment.map((e, index)=> <div key={index}> {index+1}: {e} </div> )
                   }
                   </div>

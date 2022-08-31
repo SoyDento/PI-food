@@ -3,12 +3,11 @@ const { expect } = require('chai');
 const session = require('supertest-session');
 const app = require('../../src/app.js');
 const { Recipe, conn } = require('../../src/db.js');
-const { expect } = require('chai');
 
 const agent = session(app);
 const recipe = {
     id: 0,
-    title: "Bis Homemade Garlicrrrand Basil French Fries",
+    title: "Bis  mmmm  nn Bue Fries",
     image: "https://spoonacular.com/recipeImages/715594-312x231.jpg",
     veryHealthy: true,
     cheap: false,
@@ -33,15 +32,14 @@ describe('Recipe routes', () => {
     it('should get 200', () =>
       agent.get('/recipes').expect(200)
     );
-    it('should get 200', () =>
+    it('should 325', () =>
       agent.get('/recipes')
-        .expect(200)
         .expect('Content-Type', /json/) // podemos testear los headers
         .expect(function (res) {
-          expect(res.body.length).to.eql(312) // testeamos la respuesta con el body
+          expect(res.body.length).to.eql(325) // testeamos la respuesta con el body
         })
     );
-    it('should get 200', () =>
+    it('should Homemade Garlic and Basil French Fries', () =>
       agent.get('/recipe/2')
         .expect(200)
         .expect('Content-Type', /json/) // podemos testear los headers
@@ -153,18 +151,18 @@ describe('Recipe routes', () => {
         .expect(200)
         .expect('Content-Type', /json/) // podemos testear los headers
         .expect(function (res) {
-          expect(res.body.length).to.eql(7) // testeamos la respuesta con el body
+          expect(res.body.length).to.eql(30) // testeamos la respuesta con el body
         })
     );
 
   });
 
   describe('POST /recipes', () => {
-    it('should get status 200 and add a character', () =>
+    it('should get status 200 and add a recipe', () =>
       agent.post('/recipe')
         .send({
           id: 0,
-          title: "Bis Homemnd Basil French Fries",
+          title: "Bis  Bis Y si Homemnd",
           image: "https://spoonacular.com/recipeImages/715594-312x231.jpg",
           veryHealthy: true,
           cheap: false,
@@ -174,7 +172,7 @@ describe('Recipe routes', () => {
           readyInMinutes: 45,
           servings: 2,
           sourceUrl: "http://www.pinkwhen.com/homemade-french-fries/",
-          analyzedInstructions: [],
+          analyzedInstructions: [{ "steps": [] }],
             })
         .expect(200)
     );
@@ -193,7 +191,7 @@ describe('Recipe routes', () => {
             "image": "https://spoonacular.com/recipeImages/715594-312x231.jpg",
             "veryHealthy": true,
             "cheap": false,
-            "healthScore": 77,
+            "healthScore": 78,
             "creditsText": "Jen West",
             "aggregateLikes": 2,
             "readyInMinutes": 45,

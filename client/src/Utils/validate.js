@@ -4,7 +4,6 @@ export default function validate(i) {
 
   if (!i.title || i.title.length < 1) errors.title = '* title is required';  
   if (!i.servings || i.servings.length < 1) errors.servings = '* servings is required';
-  if (!i.analyzedInstructions || i.analyzedInstructions[0].hasOwnProperty('steps') ) errors.analyzedInstructions = '* analyzedInstructions is required';
   if (!i.dishTypes || i.dishTypes.length < 1) errors.dishTypes = '* dishTypes is required';
 
   if (i.title) {
@@ -53,7 +52,13 @@ export default function validate(i) {
       errors.cuisines = '* cuisines should not contain numbers, only words'
     } 
   };
-  
+  if (i.analyzedInstructions){
+    if (Object.keys(i.analyzedInstructions).length > 0) {
+      if (i.analyzedInstructions[0].hasOwnProperty('steps')) {
+        errors.analyzedInstructions = '* analyzedInstructions is required';
+      }
+    }     
+  };
 
   return errors;
 };

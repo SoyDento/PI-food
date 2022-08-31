@@ -5,6 +5,7 @@ import thunk from "redux-thunk";
 import configureStore from "redux-mock-store";
 import { configure, mount } from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17"; 
+
 import * as data from "../../db.json";
 import App from "../App";
 import NavBar from "../components/NavBar";
@@ -17,10 +18,11 @@ configure({ adapter: new Adapter() });
 
 describe("<App />", () => {
   let store;
-  const routes = ["/", "/home", "/home/recipes/:id", "/home/recipes", "/home/search", "/home/create", "/otraRuta"];
+  const routes = ["/", "/home", "/home/recipes/:id", "/home/recipes", "/home/search", "/home/create", "/home/otraRuta"];
   const mockStore = configureStore([thunk]);
   const state = {
     recipes: data.recipes,
+    queryRecipes: data.recipes,
     recipeDetail: data[0],
   };
 
@@ -44,7 +46,7 @@ describe("<App />", () => {
       expect(app.find(NavBar)).toHaveLength(1);
     });
 
-    it('Debería ser renderizado en la ruta "/otraRuta"', () => {
+    it('Debería ser renderizado en la ruta "/home/otraRuta"', () => {
       const app = mount(componentToUse(routes[6]));
       expect(app.find(NavBar)).toHaveLength(1);
     });
@@ -66,7 +68,7 @@ describe("<App />", () => {
     expect(app.find(NavBar)).toHaveLength(1);
   });
 
-  it('El componente "CreateRecipe" se debería renderizar solamente en la ruta "/create"', () => {
+  it('El componente "CreateRecipe" se debería renderizar solamente en la ruta "/home/create"', () => {
     const app = mount(componentToUse(routes[5]));
     expect(app.find(CreateRecipe)).toHaveLength(1);
     expect(app.find(NavBar)).toHaveLength(1);
