@@ -5,6 +5,7 @@ export default function validate(i) {
   if (!i.title || i.title.length < 1) errors.title = '* title is required';  
   if (!i.servings || i.servings.length < 1) errors.servings = '* servings is required';
   if (!i.dishTypes || i.dishTypes.length < 1) errors.dishTypes = '* dishTypes is required';
+  if (!i.healthScore || i.healthScore.length < 1) errors.healthScore = '* healthScore is required';
 
   if (i.title) {
     if (!/([A-Z])\w+/g.test(i.title)) {
@@ -43,7 +44,7 @@ export default function validate(i) {
       errors.readyInMinutes = '* readyInMinutes can only be a number'
     }  
   };
-  if (i.cuisines) {
+  if (i.cuisines && i.cuisines.length > 0) {
     if (!/([A-Z])\w+/g.test(i.cuisines)) {
       errors.cuisines = '* cuisines requires at least one uppercase letter'
     } else if (i.cuisines.length < 2) {
@@ -54,7 +55,7 @@ export default function validate(i) {
   };
   if (i.analyzedInstructions){
     if (Object.keys(i.analyzedInstructions).length > 0) {
-      if (i.analyzedInstructions[0].hasOwnProperty('steps')) {
+      if (!i.analyzedInstructions[0].hasOwnProperty('steps')) {
         errors.analyzedInstructions = '* analyzedInstructions is required';
       }
     }     

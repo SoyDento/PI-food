@@ -118,6 +118,8 @@ export default function CreateRecipe () {
   };
   function handleSubmit (e) {
     e.preventDefault();
+    console.log(error);
+    setError(validate(input));
     if (error.title || error.cuisines || error.readyInMinutes || error.healthScore || error.dishTypes || error.veryHealthy || error.cheap || error.image || error.servings || error.analyzedInstructions ) {
       alert('Danger: review the data. Errors were found !!!')
     } else {       
@@ -129,9 +131,9 @@ export default function CreateRecipe () {
     };
   };
   function checking(){
+    setError(validate(input));
     console.log(error);
-    setTimeout(function(){
-        setError(validate(input));
+    setTimeout(function(){        
         if (error.title || error.cuisines || error.readyInMinutes || error.healthScore || error.dishTypes || error.veryHealthy || error.cheap || error.image || error.servings || error.analyzedInstructions ) {
           alert('Danger: review the data. Errors were found !!!')
         };

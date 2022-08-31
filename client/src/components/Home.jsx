@@ -119,7 +119,7 @@ function Home() {
   function ejectClose(e) {
     e.preventDefault(); 
     console.log(e.target.value);
-    dispatch( closeRecipe(e.target.value) );
+    // dispatch( closeRecipe(e.target.value) );
     let filterClose = state.allReci.filter(c=> c.id !== parseInt(e.target.value));   
     setState({
       ...state,
