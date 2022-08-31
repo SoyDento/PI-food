@@ -2,11 +2,11 @@ import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 
 import {
-  getDbRecipes,
+  getAllrecipes,
   postRecipe,
   getRecipeDetail,
   closeRecipe,
-} from "../actions";
+} from "../redux/actions";
 import * as data from "../../db.json";
 
 describe("Actions", () => {
@@ -24,13 +24,13 @@ describe("Actions", () => {
 
   beforeEach(() => store.clearActions());
 
-  describe("getDbRecipes", () => {
+  describe("getAllrecipes", () => {
     it('Debería hacer un dispatch con las propiedades type "GET_DB_RECIPES" y como payload, el resultado del fetch al link provisto', async () => {
       return store
-        .dispatch(getDbRecipes())
+        .dispatch(getAllrecipes())
         .then(() => {
           const actions = store.getActions();
-          expect(actions[0].payload.length).toBe(312); // cambiar por cantidad de recipes de la API
+          expect(actions[0].payload.length).toBe(323); // cambiar por cantidad de recipes de la API
         })
         .catch((err) => {
           // Acá llegamos cuando tu petición al backend no salió como el test lo pide. Revisá el error en la consola y verificá
@@ -43,12 +43,12 @@ describe("Actions", () => {
 
   describe("getRecipeDetail", () => {
     it('Debería hacer un dispatch con las propiedades type "GET_RECIPE_DETAIL" y como payload, el resultado del fetch al link provisto', async () => {
-      const payload = data[0];
+      const payload = data.default[0];
       return store
-        .dispatch(getRecipeDetail(1))
+        .dispatch(getRecipeDetail(2))
         .then(() => {
           const actions = store.getActions();
-          expect(actions[0]).toStrictEqual({
+          expect(actions[1]).toStrictEqual({
             type: "GET_RECIPE_DETAIL",
             payload: { ...payload },
           });
@@ -77,7 +77,7 @@ describe("Actions", () => {
         "readyInMinutes": 45,
         "servings": 2,
         "sourceUrl": "http://www.pinkwhen.com/homemade-french-fries/",
-        "analyzedInstructions": []
+        "analyzedInstructions": [{ "steps": [] }]
       };
       const payload2 = {
         "id": 0,
@@ -91,10 +91,11 @@ describe("Actions", () => {
         "readyInMinutes": 45,
         "servings": 2,
         "sourceUrl": "http://www.pinkwhen.com/homemade-french-fries/",
-        "analyzedInstructions": []
+        "analyzedInstructions": [{ "steps": [] }]
       };
       expect(postRecipe(payload1)).objectContaining({
         "id": expect.any(Number),
+        "db":0,
         "title": "Bis c anench Fries",
         "image": "https://spoonacular.com/recipeImages/715594-312x231.jpg",
         "veryHealthy": true,
@@ -105,10 +106,11 @@ describe("Actions", () => {
         "readyInMinutes": 45,
         "servings": 2,
         "sourceUrl": "http://www.pinkwhen.com/homemade-french-fries/",
-        "analyzedInstructions": []
+        "analyzedInstructions": [{ "steps": [] }]
       });
       expect(postRecipe(payload2)).objectContaining({
         "id": expect.any(Number),
+        "db":0,
         "title": "Bis c aassasaasasasasch Fries",
         "image": "https://spoonacular.com/recipeImages/715594-312x231.jpg",
         "veryHealthy": true,
@@ -119,7 +121,7 @@ describe("Actions", () => {
         "readyInMinutes": 45,
         "servings": 2,
         "sourceUrl": "http://www.pinkwhen.com/homemade-french-fries/",
-        "analyzedInstructions": []
+        "analyzedInstructions": [{ "steps": [] }]
 
       });
 
@@ -127,7 +129,7 @@ describe("Actions", () => {
   });
 
   describe("closeRecipe", () => {
-    it('Debería retornar una action con las propiedades type "CLOSE_RECIPE" y como payload el id de la casa a eliminar. Recibe el id por argumento', () => {
+    it('Debería retornar una action con las propiedades type "CLOSE_RECIPE" y como payload el id de la receta a eliminar. Recibe el id por argumento', () => {
       expect(closeRecipe(1)).toEqual({ type: "CLOSE_RECIPE", payload: 1 });
       expect(closeRecipe(2)).toEqual({ type: "CLOSE_RECIPE", payload: 2 });
     });

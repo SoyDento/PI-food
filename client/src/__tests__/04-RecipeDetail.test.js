@@ -5,13 +5,12 @@ import { configure, mount } from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import isReact from "is-react";
-   
+import isReact from "is-react";   
 import RecipeDetailConnected, {
   RecipeDetail,
   mapDispatchToProps,
 } from "../components/RecipeDetail";
-import * as actions from "../actions";
+import * as actions from "../redux/actions";
 import * as data from "../../db.json";
 
 configure({ adapter: new Adapter() });

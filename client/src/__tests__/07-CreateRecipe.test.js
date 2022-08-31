@@ -8,14 +8,14 @@ import thunk from "redux-thunk";
 import isReact from "is-react";
 import * as data from "../../db.json";
 import CreateRecipe from "../components/CreateRecipe";
-import * as actions from "../actions";
+import * as actions from "../redux/actions";
 
 configure({ adapter: new Adapter() });
 
 describe("<CreateRecipe />", () => {
   const state = { recipes: data };
   const mockStore = configureStore([thunk]);
-  const { CREATE_HOUSE } = actions;
+  const { POST_RECIPE } = actions;
 
   beforeAll(() => expect(isReact.classComponent(CreateRecipe)).toBeFalsy());
 
@@ -29,7 +29,7 @@ describe("<CreateRecipe />", () => {
     beforeEach(() => {
       postRecipe = mount(
         <Provider store={store}>
-          <MemoryRouter initialEntries={["/recipe/create"]}>
+          <MemoryRouter initialEntries={["/home/create"]}>
             <CreateRecipe />
           </MemoryRouter>
         </Provider>
@@ -37,7 +37,7 @@ describe("<CreateRecipe />", () => {
     });
 
     it("Debería renderizar un form", () => {
-      expect(postRecipe.find("form")).toHaveLength(1);
+      expect(postRecipe.find("form")).toHaveLength(2);
     });
 
     it('Debería renderizar un div con el texto "Name: |"', () => {
@@ -211,7 +211,7 @@ describe("<CreateRecipe />", () => {
         {
           payload: {
             id: 0,
-            title: "",
+            title: "Bis hhhhhhh",
             image: "https://spoonacular.com/recipeImages/715594-312x231.jpg",
             veryHealthy: true,
             cheap: false,
@@ -219,9 +219,9 @@ describe("<CreateRecipe />", () => {
             creditsText: "",
             aggregateLikes: 1,
             readyInMinutes: 999,
-            servings: 0,
+            servings: 4,
             sourceUrl: "",
-            analyzedInstructions: [],
+            analyzedInstructions: [{ "steps": [] }],
             diets: [],
             dishTypes: [],
             cuisines: []

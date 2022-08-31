@@ -277,7 +277,7 @@ export default function CreateRecipe () {
       <select value='default' onChange={(e)=> handleSelect(e)}>
         <option value='default' disabled>------select------</option>
         {
-          dishTypesStore.map(dt=> <option key={dt.id} value={`dishTypes_${dt.name}`}> {dt.name} </option> )
+          dishTypesStore?.map(dt=> <option key={dt.id} value={`dishTypes_${dt.name}`}> {dt.name} </option> )
         }
       </select >
       <div className={s.boxClose}>

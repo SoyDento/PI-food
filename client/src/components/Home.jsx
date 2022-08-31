@@ -18,7 +18,7 @@ function Home() {
 
   const dispatch = useDispatch();
 
-  const recipes = useSelector(state=> state.recipes);
+  const recipes = useSelector(state=> state.recipes);    console.log(recipes.length);
   const diets = useSelector(state=> state.diets); // console.log(diets);
   const dishTypes = useSelector(state=> state.dishTypes);
   const [page, setPage] = React.useState(1);

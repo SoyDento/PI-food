@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { configure, shallow } from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import isReact from "is-react";
-
 import NavBar from "../components/NavBar";
 
 configure({ adapter: new Adapter() });
@@ -32,8 +31,8 @@ describe("<NavBar />", () => {
     expect(nav.find(Link).at(1).text()).toEqual("Search Recipe");
   });
 
-  it('Debería tener un segundo Link, con texto "Create New Recipe" y que cambie la ruta hacia "/home/create"', () => {
-    expect(nav.find(Link).at(3).prop("to")).toEqual("/home/create");
-    expect(nav.find(Link).at(3).text()).toEqual("Create New Recipe");
+  it('Debería tener un tercer Link, con texto "Create New Recipe" y que cambie la ruta hacia "/home/create"', () => {
+    expect(nav.find(Link).at(2).prop("to")).toEqual("/home/create");
+    expect(nav.find(Link).at(2).text()).toEqual("Create New Recipe");
   });
 });

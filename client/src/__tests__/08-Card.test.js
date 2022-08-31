@@ -33,13 +33,13 @@ describe("<Card />", () => {
 
   it('Debería renderizar un tag "img" y utilizar como source la imagen del personaje', () => {
     expect(recipeCard(reci1).find("img").at(0).prop("src")).toEqual(
-      reci1.img
+      "https://spoonacular.com/recipeImages/715594-312x231.jpg"
     );
     expect(recipeCard(reci2).find("img").at(0).prop("src")).toEqual(
-      reci2.img
+      "https://spoonacular.com/recipeImages/716426-312x231.jpg"
     );
     expect(recipeCard(reci3).find("img").at(0).prop("src")).toEqual(
-      reci3.img
+      "https://spoonacular.com/recipeImages/644387-312x231.jpg"
     );
   });
 
