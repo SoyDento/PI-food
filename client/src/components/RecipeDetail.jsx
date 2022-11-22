@@ -9,7 +9,8 @@ import { emptyRecipeDetail,
          changeAtrib,
          iliked, 
          removeRecipe } from "../redux/actions";
-// import Spinner from './Spinner'
+// import Spinner from './Spinner';
+import StarRating from './StarRating';
 import s from "../styles/RecipeDetail.module.css";
 import validateChg from '../Utils/validateChg.js';
 import instructions from '../Utils/instructions';
@@ -28,7 +29,7 @@ export class RecipeDetail extends Component {
         data: '',
         status: 'on',
         params: this.props.match.params.id,
-        query: this.props.history.location.search.replace('?creat=',''),
+        query: this.props.history.location.search.replace('?creat=',''), // para tomar el valor que viene por query en la url
         // query2: ()=>{
         //   let queryString = window.location.search;
         //   let urlParams = new URLSearchParams(queryString);
@@ -172,11 +173,11 @@ export class RecipeDetail extends Component {
                   this.props.recipeDetail.dishTypes.map(o=> ' - ' + o + ' - ')
               }
               </h3>
-            </div>
+            </div> 
             <br/>
             <div>
-                    {
-                      ( Number(this.state.query) !== 0 ) ?  null :
+                    {/* Number(this.state.query) !== 0 ) ?  null :  acá recibe x query y discrimina */}
+                    { !this.props.recipeDetail.created_DB ?  null :
                       <div className='change'>
                         <h3>modify recipe attributes</h3>
 
@@ -250,22 +251,23 @@ export class RecipeDetail extends Component {
                 ► Link: <a href={this.props.recipeDetail.sourceUrl}> {this.props.recipeDetail.sourceUrl} </a> 
               </p>
             </div>
+            <input type="number" 
+            placeholder="1-5"  min="1" max="5" />
+            <StarRating stars="3.5"/>
            
             <div>
-            <div className={s.esp}>
-              
-            </div>
-            {
-              (Number(this.state.query) !== 0) ?  null :
-              <>
-                <button 
-                    className={s.danger} 
-                    value={this.props.recipeDetail.id} 
-                    onClick={(e)=>this.handleRemove(e)}>
-                  delete recipe
-                </button>  &nbsp;&nbsp;&nbsp;
-              </>
-            }              
+              <div className={s.esp}></div>
+              {
+                (Number(this.state.query) !== 0) ?  null :
+                <>
+                  <button 
+                      className={s.danger} 
+                      value={this.props.recipeDetail.id} 
+                      onClick={(e)=>this.handleRemove(e)}>
+                    delete recipe
+                  </button>  &nbsp;&nbsp;&nbsp;
+                </>
+              }              
               <Link to="/home/recipes">  <button>back to recipes</button>  </Link>
               <Link to="/home/search">  <button>perform a search</button>  </Link>
             </div>

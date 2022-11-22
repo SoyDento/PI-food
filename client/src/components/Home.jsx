@@ -177,6 +177,7 @@ function Home() {
             diets?.map( (d)=> <option key={d.id} value={d.name}> {d.name} </option> )
           }     
         </select >
+        {/* 
         <div className={s.esp}></div>
         <div className={s.text}> Recipes Created:</div>
         <select value='default' onChange={(e)=> handleFilterCreat(e)}>
@@ -184,6 +185,7 @@ function Home() {
           <option value='api'>original recipes</option>
           <option value='created'>recipes created</option>
         </select >
+        */}
         <div className={s.esp}></div>
         <button onClick={(e)=> sortScore(e)}>Health Score</button>
       </div>
