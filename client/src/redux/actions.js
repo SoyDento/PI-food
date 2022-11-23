@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const GET_RECIPE_DETAIL = 'GET_RECIPE_DETAIL';
 
 export const EMPTY_RECIPE_DETAIL="EMPTY_RECIPE_DETAIL"
@@ -37,8 +39,9 @@ export const ILIKED_RECIPE = 'ILIKED_RECIPE';
 
 export function getRecipes(){
   return function(dispatch) {        
-    return fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=7bc6e5fb0f4a44fe9baa3e7dce8a6665&number=100&addRecipeInformation=true`)
-    .then(res => res.json())
+    return axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=7bc6e5fb0f4a44fe9baa3e7dce8a6665&number=100&addRecipeInformation=true`)
+    // .then(res => res.json())
+    .then(res => res.data)
     .then(res =>{
       let arr = []
       res.forEach( o=>{
@@ -69,8 +72,10 @@ export function getRecipeDetail(id, creat){
   console.log(id);
     return function(dispatch) {
       if (creat) {
-        return fetch(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=f01dd829cbbd4de49a96e591532f1ca1`) 
-        .then(res => res.json())
+        // return fetch(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=f01dd829cbbd4de49a96e591532f1ca1`) 
+        return axios.get(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false&apiKey=f01dd829cbbd4de49a96e591532f1ca1`) 
+        // .then(res => res.json())
+        .then(res => res.data)
         .then(res =>{
           let obj = {
             id: res.id_db,
@@ -96,8 +101,8 @@ export function getRecipeDetail(id, creat){
         })
         .then(json => {  dispatch({type: GET_RECIPE_DETAIL, payload: json})  }) // o  payload: json[0]
       };      
-      return fetch(`http://localhost:3001/recipe/${id}`)
-      .then(res => res.json())
+      return axios.get(`/recipe/${id}`)
+      .then(res => res.data)
       .then(res =>{
         let obj = {
           id: res.id_db,
@@ -168,8 +173,8 @@ export function orderByName (payload) {
 
 export function getNameRecipe(name){
     return function(dispatch){
-        return fetch(`http://localhost:3001/recipes?data=${name}`)
-        .then(res => res.json())
+        return axios.get(`/recipes?data=${name}`)
+        .then(res => res.data)
         .then(res =>{
           console.log(res);
           if (res[0].hasOwnProperty('msg')) return res;
@@ -199,8 +204,8 @@ export function getNameRecipe(name){
 
 export function getDiets(){
     return function(dispatch){
-        return fetch(`http://localhost:3001/diets`)
-        .then(res => res.json())
+        return axios.get(`/diets`)
+        .then(res => res.data)
         //despachar el objeto al reducer
         .then(json => {  dispatch({type: GET_DIETS, payload: json})  })
     }
@@ -208,8 +213,8 @@ export function getDiets(){
 
 export function getDishTypes(){
   return function(dispatch){
-      return fetch(`http://localhost:3001/dishTypes`)
-      .then(res => res.json())
+      return axios.get(`/dishTypes`)
+      .then(res => res.data)
       //despachar el objeto al reducer
       .then(json => {  dispatch({type: GET_DISH_TYPES, payload: json})  })
   }
@@ -217,8 +222,8 @@ export function getDishTypes(){
 
 export function getCuisines(){
   return function(dispatch){
-      return fetch(`http://localhost:3001/cuisines`)
-      .then(res => res.json())
+      return axios.get(`/cuisines`)
+      .then(res => res.data)
       //despachar el objeto al reducer
       .then(json => {  dispatch({type: GET_CUISINES, payload: json})  })
   }
@@ -229,15 +234,15 @@ export function getCuisines(){
 export function postRecipe(body){
     console.log('input en actions REDUX: ', body);
     return function(dispatch){
-        // return axios.post(`https://localhost:3001/postRecipes/`,body)
-        // .then(json => {  dispatch({type: POST_RECIPE})  })
-        return fetch(`http://localhost:3001/recipe`, {
-            method: 'POST', // or 'PUT'
-            body: JSON.stringify(body), // data can be `string` or {object}!
-            headers:{
-              'Content-Type': 'application/json'
-            }
-          }).then(res => dispatch({type: POST_RECIPE}) )
+        return axios.post(`/recipe`, body)
+          .then(json => {  dispatch({type: POST_RECIPE})  })
+        // return fetch(`/recipe`, {
+        //     method: 'POST', // or 'PUT'
+        //     body: JSON.stringify(body), // data can be `string` or {object}!
+        //     headers:{
+        //       'Content-Type': 'application/json'
+        //     }
+        //   }).then(res => dispatch({type: POST_RECIPE}) )
           .catch(error => console.error('Error:', error))
           .then(response => console.log('Success:', response));
     }
@@ -247,8 +252,8 @@ export function postRecipe(body){
 
 export function getAllrecipes(){
     return function(dispatch) {
-        return fetch(`http://localhost:3001/recipes`)
-        .then(res => res.json())
+        return axios.get(`/recipes`)
+        .then(res => res.data)
         .then(res =>{
           let arr = []
           res.forEach( o=>{
@@ -277,15 +282,18 @@ export function getAllrecipes(){
 export function removeRecipe (id) {
   console.log(id);
   return function(dispatch) {
-      return fetch(`http://localhost:3001/recipe/remove?id=${id}`, {
-            method: 'DELETE', 
-            headers:{
-              'Content-Type': 'application/json'
-            }
-          })
-      .then(res => res.json())
-      .then(json => {  dispatch({type: REMOVE_RECIPE, payload: json})  })
+      // return fetch(`/recipe/remove?id=${id}`, {
+      //       method: 'DELETE', 
+      //       headers:{
+      //         'Content-Type': 'application/json'
+      //       }
+      //     })
+      //   .then(res => res.json())
+      //   .then(json => {  dispatch({type: REMOVE_RECIPE, payload: json})  })
+      return axios.delete(`/recipe/remove?id=${id}`)
+        .then(json => {  dispatch({type: REMOVE_RECIPE, payload: json})  })
   }
+  
 }
 
 export function closeRecipe (id) {
@@ -298,11 +306,12 @@ export function closeRecipe (id) {
 export function changeAtrib (attribute, id, valor) {
   console.log(id); console.log(attribute); console.log(valor);
   return function(dispatch) {
-      return fetch(`http://localhost:3001/recipe/${attribute}?id=${id}&value=${valor}`, {
-            method: 'PUT',
-            headers:{ 'Content-Type': 'application/json' }
-          })
-      .then(res => res.json())
+      // return fetch(`/recipe/${attribute}?id=${id}&value=${valor}`, {
+      //       method: 'PUT',
+      //       headers:{ 'Content-Type': 'application/json' }
+      //     })
+      return axios.put(`/recipe/${attribute}?id=${id}&value=${valor}`)
+      .then(res => res.data)
       .then(json => {  dispatch({type: CHANGE_AT, payload: json})  })
   }
 }

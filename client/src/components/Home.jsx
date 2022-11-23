@@ -75,18 +75,18 @@ function Home() {
     })
     setPage(1);
   };
-  const handleFilterCreat = (e) => {
-    e.preventDefault();
-    // dispatch( filterCreated(e.target.value) );
-    let allRecipes = state.allReci;
-    let createdFilter = (e.target.value === 'created') ?
-        allRecipes.filter( (el)=> el.db === 0 ) : allRecipes.filter( (el)=> el.db !== 0 );        
-    setState({
-      ...state,
-      allReci: createdFilter,
-    })
-    setPage(1);
-  };
+  // const handleFilterCreat = (e) => {
+  //   e.preventDefault();
+  //   // dispatch( filterCreated(e.target.value) );
+  //   let allRecipes = state.allReci;
+  //   let createdFilter = (e.target.value === 'created') ?
+  //       allRecipes.filter( (el)=> el.db === 0 ) : allRecipes.filter( (el)=> el.db !== 0 );        
+  //   setState({
+  //     ...state,
+  //     allReci: createdFilter,
+  //   })
+  //   setPage(1);
+  // };
   const handleSort = (e) => {
     e.preventDefault();
     // dispatch( orderByName(e.target.value) );

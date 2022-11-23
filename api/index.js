@@ -31,9 +31,9 @@ conn.sync({ force: false }).then(() => {
   // addTables();
   // pushDiets(); pushCuisines(); pushDishTypes();
   // pushRecipes(); 
-  // changeRecipes();
+  // changeRecipes(); 
   
   server.listen(PORT, () => {
-    console.log('%s listening at 3001'); // eslint-disable-line no-console
+    console.log(`%s listening at ${PORT}`); // eslint-disable-line no-console
   });
 });
