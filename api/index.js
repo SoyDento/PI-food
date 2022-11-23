@@ -27,10 +27,10 @@ const  addTables  = require('./src/utils/pushDatabase/addTables.js');
 const  changeRecipes  = require('./src/utils/pushDatabase/changeRecipes.js');
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
-  addTables();
-  pushDiets(); pushCuisines(); pushDishTypes();
-  pushRecipes(); 
+conn.sync({ force: false }).then(() => {
+  // addTables();
+  // pushDiets(); pushCuisines(); pushDishTypes();
+  // pushRecipes(); 
   // changeRecipes(); 
   
   server.listen(PORT, () => {
