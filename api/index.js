@@ -30,7 +30,7 @@ const  changeRecipes  = require('./src/utils/pushDatabase/changeRecipes.js');
 conn.sync({ force: false }).then(() => {
   // addTables();
   // pushDiets(); pushCuisines(); pushDishTypes();
-  // pushRecipes(); 
+  pushRecipes(); 
   // changeRecipes(); 
   
   server.listen(PORT, () => {
