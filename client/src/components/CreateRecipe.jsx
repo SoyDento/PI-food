@@ -163,10 +163,10 @@ export default function CreateRecipe () {
 
   return(
     <div className={s.bakg}>
-      <div className={`${s.cont2}`}>
-        <div className={`${s.bannerText}`} key='bt'>create</div>
+      <div className={s.cont2}>
+        <div className={s.bannerText} key='bt'>create</div>
       </div>
-      <form className={`${s.form}`} onSubmit={(e)=>handleSubmit(e)}>
+      <form className={s.form} onSubmit={(e)=>handleSubmit(e)}>
 
         <div className={s.buttons}>
           <div className={s.textButton}>complete and press ►</div>
@@ -201,7 +201,7 @@ export default function CreateRecipe () {
               </div>
             </div>
 
-            <div className={`${s.inpt}`} key='h'>Is it very very healthy?: |
+            <div className={s.inpt} key='h'>Is it very very healthy?: |
               <select value='default' onChange={(e)=> handleBoolean(e)}>
                 <option value='default' disabled>------select------</option>
                 <option value='veryHealthy_true'> true </option>
@@ -314,8 +314,8 @@ export default function CreateRecipe () {
         {error.diets || 'valid data'}
       </div>     
       
-      <div className={`${s.form}`} key='cuisine'> 
-              <div className={`${s.inpt}`} >State whether it is typical of a particular cuisine or belongs to the cuisine of a region or regions. In the case of belonging to more than one cuisine, separate each cuisine with a hyphen. Warning: Do not use a space, except in the case of compound names: </div>
+      <div className={s.form} key='cuisine'> 
+              <div className={s.inpt} >State whether it is typical of a particular cuisine or belongs to the cuisine of a region or regions. In the case of belonging to more than one cuisine, separate each cuisine with a hyphen. Warning: Do not use a space, except in the case of compound names: </div>
                   <input
                       name="cuisines" value={input.cuisines}  placeholder='complete...'
                       onChange={(e)=>handleChange(e)}
@@ -326,7 +326,7 @@ export default function CreateRecipe () {
               </div>
       </div>
 
-      <div className={`${s.box}`} key='c'> List of existing cuisines from the database:
+      <div className={s.box} key='c'> List of existing cuisines from the database:
         <h4>
           {
             cuisinesStore?.map(c=> ' ' + c.name + ',  ')
